@@ -25,49 +25,57 @@ NSString * DEFAULT_LICENSE_SERVER_URL = @"https://fps.ezdrm.com/api/licenses/";
  ** It returns CKC.
  ** ---------------------------------------*/
 - (NSData *)getContentKeyAndLeaseExpiryFromKeyServerModuleWithRequest:(NSData*)requestBytes and:(NSString *)assetId and:(NSString *)customParams and:(NSError *)errorOut {
+    NSLog(@"Licence Fetch Started");
     NSData * responseData;
     NSURLResponse * response;
     
     NSURL * finalLicenseURL;
-    if (_licenseURL != [NSNull null]){
-        finalLicenseURL = _licenseURL;
-    } else {
-        finalLicenseURL = [[NSURL alloc] initWithString: DEFAULT_LICENSE_SERVER_URL];
-    }
-    NSURL * ksmURL = [[NSURL alloc] initWithString: [finalLicenseURL]];
+    finalLicenseURL = _licenseURL;
 
+    NSLog(@"Generate URL");
+    NSURL * ksmURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@",finalLicenseURL]];
+
+    NSLog(@"Generate b64 spc");
     NSString *spc = [requestBytes base64EncodedStringWithOptions:0];
-    NSDictionary *jsonBodyDict = @{@"spc":spc, @"assetId":assetId};
-    NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:jsonBodyDict options:kNilOptions error:nil];
-    
-    NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:ksmURL];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
-    [request setHTTPBody:jsonBodyData];
+    if (spc != nil) {
+        NSLog(@"Generate Payload");
+        assetId = [assetId stringByReplacingOccurrencesOfString:@"skd://" withString:@""];
+        NSDictionary *jsonBodyDict = @{@"spc":spc, @"assetId":assetId};
+        NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:jsonBodyDict options:kNilOptions error:nil];
+        
+        NSLog(@"prepare request");
+        NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:ksmURL];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
+        [request setHTTPBody:jsonBodyData];
 
 
 
-    @try {
-        responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+        @try {
+            NSLog(@"Response Get");
+            responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
 
-        NSError* error = nil;
+            NSError* error = nil;
 
-        NSString *strISOLatin = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
-        NSData *dataUTF8 = [strISOLatin dataUsingEncoding:NSUTF8StringEncoding];
+            NSLog(@"parse response");
+            NSString *strISOLatin = [[NSString alloc] initWithData:responseData encoding:NSISOLatin1StringEncoding];
+            NSData *dataUTF8 = [strISOLatin dataUsingEncoding:NSUTF8StringEncoding];
 
-        id dict = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
+            id dict = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
 
-        if (dict != nil) {
-            NSString ckcEncoded = [dict objectForKey:@"ckc"]
-            NSData * ckc = [[NSData alloc]initWithBase64EncodedString:ckcEncoded options:0];
-            return ckc
-        } else {
-            NSLog(@"Error: %@", error);
+            if (dict != nil) {
+                NSString *ckcEncoded = [dict objectForKey:@"ckc"];
+                NSData *ckc = [[NSData alloc]initWithBase64EncodedString:ckcEncoded options:0];
+                return ckc;
+            } else {
+                NSLog(@"Error: %@", error);
+            }
+        }
+        @catch (NSException* excp) {
+            NSLog(@"SDK Error, SDK responded with Error: (error)");
         }
     }
-    @catch (NSException* excp) {
-        NSLog(@"SDK Error, SDK responded with Error: (error)");
-    }
+    
 }
 
 /*------------------------------------------
@@ -87,7 +95,7 @@ NSString * DEFAULT_LICENSE_SERVER_URL = @"https://fps.ezdrm.com/api/licenses/";
 - (BOOL)resourceLoader:(AVAssetResourceLoader *)resourceLoader shouldWaitForLoadingOfRequestedResource:(AVAssetResourceLoadingRequest *)loadingRequest {
     NSURL *assetURI = loadingRequest.request.URL;
     NSString * str = assetURI.absoluteString;
-    NSString * mySubstring = [str substringFromIndex:str.length - 36];
+    NSString * mySubstring = [str stringByReplacingOccurrencesOfString:@"skd://" withString:@""];
     _assetId = mySubstring;
     NSString * scheme = assetURI.scheme;
     NSData * requestBytes;

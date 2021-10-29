@@ -19,13 +19,12 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
           ],
           supportedLocales: [
-            const Locale('en', 'US'),
-            const Locale('pl', 'PL'),
+            const Locale('en', 'US')
           ],
           theme: ThemeData(
             primarySwatch: Colors.green,
           ),
-          home: DrmPage(),
+          home: WelcomePage(),
         ));
   }
 }
