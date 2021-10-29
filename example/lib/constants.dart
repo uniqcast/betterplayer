@@ -9,7 +9,7 @@ class Constants {
       "https://github.com/tinusneethling/betterplayer/raw/ClearKeySupport/example/assets/testvideo_encrypt.mp4";
   static const String fileExampleSubtitlesUrl = "example_subtitles.srt";
   static const String hlsTestStreamUrl =
-      "https://mtoczko.github.io/hls-test-streams/test-group/playlist.m3u8";
+      "https://fairplay-test.uniqcast.com:8080/demo/master_playlist.m3u8";
   static const String hlsPlaylistUrl =
       "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8";
   static const Map<String, String> exampleResolutionsUrls = {
@@ -43,11 +43,14 @@ class Constants {
       "https://storage.googleapis.com/wvmedia/cenc/h264/tears/tears_sd.mpd";
   static String widevineLicenseUrl =
       "https://proxy.uat.widevine.com/proxy?provider=widevine_test";
+
   static String fairplayHlsUrl =
-      "https://fps.ezdrm.com/demo/hls/BigBuckBunny_320x180.m3u8";
+      "https://devel.uniqcast.com/samples/demo-fairplay/master_playlist.m3u8";
   static String fairplayCertificateUrl =
-      "https://github.com/koldo92/betterplayer/raw/fairplay_ezdrm/example/assets/eleisure.cer";
-  static String fairplayLicenseUrl = "https://fps.ezdrm.com/api/licenses/";
+      "https://devel.uniqcast.com/samples/demo-fairplay/fairplay.der";
+  static String fairplayLicenseUrl = "https://fairplay-test.uniqcast.com:5000/api/key";
+
+
   static String catImageUrl =
       "https://img.webmd.com/dtmcms/live/webmd/consumer_assets/site_images/article_thumbnails/other/cat_relaxing_on_patio_other/1800x1200_cat_relaxing_on_patio_other.jpg";
   static String dashStreamUrl =
