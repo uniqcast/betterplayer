@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "BetterPlayerEzDrmAssetsLoaderDelegate.h"
+#import "BetterPlayerAssetsLoaderDelegate.h"
 
-@implementation BetterPlayerEzDrmAssetsLoaderDelegate
+@implementation BetterPlayerAssetsLoaderDelegate
 
 NSString *_assetId;
 
@@ -34,13 +34,19 @@ NSString * DEFAULT_LICENSE_SERVER_URL = @"https://fps.ezdrm.com/api/licenses/";
     } else {
         finalLicenseURL = [[NSURL alloc] initWithString: DEFAULT_LICENSE_SERVER_URL];
     }
-    NSURL * ksmURL = [[NSURL alloc] initWithString: [NSString stringWithFormat:@"%@%@%@",finalLicenseURL,assetId,customParams]];
+    NSURL * ksmURL = [[NSURL alloc] initWithString: [finalLicenseURL]];
+
+    NSString *spc = [requestBytes base64EncodedStringWithOptions:0];
+    NSDictionary *jsonBodyDict = @{@"spc":spc, @"assetId":assetId};
+    NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:jsonBodyDict options:kNilOptions error:nil];
     
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:ksmURL];
     [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/octet-stream" forHTTPHeaderField:@"Content-type"];
-    [request setHTTPBody:requestBytes];
-    
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
+    [request setHTTPBody:jsonBodyData];
+
+
+
     @try {
         decodedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
     }
