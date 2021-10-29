@@ -25,7 +25,7 @@ NSString * DEFAULT_LICENSE_SERVER_URL = @"https://fps.ezdrm.com/api/licenses/";
  ** It returns CKC.
  ** ---------------------------------------*/
 - (NSData *)getContentKeyAndLeaseExpiryFromKeyServerModuleWithRequest:(NSData*)requestBytes and:(NSString *)assetId and:(NSString *)customParams and:(NSError *)errorOut {
-    NSData * decodedData;
+    NSData * responseData;
     NSURLResponse * response;
     
     NSURL * finalLicenseURL;
@@ -48,12 +48,26 @@ NSString * DEFAULT_LICENSE_SERVER_URL = @"https://fps.ezdrm.com/api/licenses/";
 
 
     @try {
-        decodedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+        responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+
+        NSError* error = nil;
+
+        NSString *strISOLatin = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
+        NSData *dataUTF8 = [strISOLatin dataUsingEncoding:NSUTF8StringEncoding];
+
+        id dict = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
+
+        if (dict != nil) {
+            NSString ckcEncoded = [dict objectForKey:@"ckc"]
+            NSData * ckc = [[NSData alloc]initWithBase64EncodedString:ckcEncoded options:0];
+            return ckc
+        } else {
+            NSLog(@"Error: %@", error);
+        }
     }
     @catch (NSException* excp) {
         NSLog(@"SDK Error, SDK responded with Error: (error)");
     }
-    return decodedData;
 }
 
 /*------------------------------------------
