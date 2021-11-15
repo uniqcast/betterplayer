@@ -30,7 +30,12 @@ NSString * DEFAULT_LICENSE_SERVER_URL = @"https://fps.ezdrm.com/api/licenses/";
     NSURLResponse * response;
     
     NSURL * finalLicenseURL;
-    finalLicenseURL = _licenseURL;
+    NSString * jwtToken;
+
+    NSArray * components = [_licenseURL.absoluteString componentsSeparatedByString: @"jwt="];
+
+    finalLicenseURL = components[0];
+    jwtToken = [NSString stringWithFormat:@"Bearer %@", components[1]];
 
     NSLog(@"Generate URL");
     NSURL * ksmURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@",finalLicenseURL]];
@@ -47,6 +52,7 @@ NSString * DEFAULT_LICENSE_SERVER_URL = @"https://fps.ezdrm.com/api/licenses/";
         NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:ksmURL];
         [request setHTTPMethod:@"POST"];
         [request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
+        [request setValue:jwtToken forHTTPHeaderField:@"Authorization" ];
         [request setHTTPBody:jsonBodyData];
 
 

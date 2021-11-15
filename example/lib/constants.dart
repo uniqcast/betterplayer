@@ -45,10 +45,10 @@ class Constants {
       "https://proxy.uat.widevine.com/proxy?provider=widevine_test";
 
   static String fairplayHlsUrl =
-      "https://devel.uniqcast.com/samples/demo-fairplay/master_playlist.m3u8";
+      "http://fairplay-test.uniqcast.com:11313/auth-streaming/2,b487c8612a4e9b0e963831ae65f136a567365967,1637082497,jjones,0-novatv,8,8,8,8,8,8,DESKTOP,15,all,none,default,192.168.0.178/playlist/0-novatv/live/index.m3u8";
   static String fairplayCertificateUrl =
-      "https://devel.uniqcast.com/samples/demo-fairplay/fairplay.der";
-  static String fairplayLicenseUrl = "https://fairplay-test.uniqcast.com:5000/api/key";
+      "http://fairplay-test.uniqcast.com:11313/drmproxy/fp/cert";
+  static String fairplayLicenseUrl = "http://fairplay-test.uniqcast.com:11313/drmproxy/fp/license?lat=2I8mtqM5%2F6IdGKu2vcuU8so1x41ZiXF2F5tiLhAyShEi036TZ23aWZ01N3IaVMb4g0SkzkHFJSEGQpDcqZ4z%2FlvTKzV%2FxG%2FxSD3eCqtxQrEbAswwh8D6x%2B2U0j6funklbzIlhwvpkCqSmOGwHHuy9HG7szmEBanF7D8OCvP7C6kOHgYVYmdny%2BIhvZbEdVIRm3O2xhvvKWTM7zvcqCuYIgTa0i%2FeMKEO7QEsCHiEgU4%3D&jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIsInVuYW1lIjoiampvbmVzIiwicGFzcyI6IjA3NTY4MTAyODk4MTQzNjJlZmJlYThiYjgyNmZlYTBhN2JjNDMxOGE3ZjIyYTRiMjdiNDgyOTBjZDM5OTUxYTMiLCJyb2xlIjpbInN1YnNjcmliZXIiXSwiZGlkIjoxNSwiZHVpZCI6Im1hY3Rlc3QiLCJvaWQiOjEsIm91aWQiOiJkZWZhdWx0IiwicmlkIjoxLCJydWlkIjoiZGVmYXVsdCIsInBuYW1lIjoiSmVzc2ljYSIsIm1waW4iOiIwM2FjNjc0MjE2ZjNlMTVjNzYxZWUxYTVlMjU1ZjA2Nzk1MzYyM2M4YjM4OGI0NDU5ZTEzZjk3OGQ3Yzg0NmY0IiwicHBpbiI6IjEyMzQiLCJpYXQiOjE2MzY5OTYwNzcsImV4cCI6MTYzNjk5Nzg3NywiaXNzIjoidW5pcUNhc3QiLCJzdWIiOiJsb2dpbiJ9.gQXOoxjsyy1wNihXoktBSG_EXywnL8_grlkIAtE2TnM";
 
 
   static String catImageUrl =
