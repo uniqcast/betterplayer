@@ -1,19 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:better_player/better_player.dart';
-import 'package:better_player/src/asms/better_player_asms_audio_track.dart';
-import 'package:better_player/src/asms/better_player_asms_data_holder.dart';
-import 'package:better_player/src/asms/better_player_asms_subtitle.dart';
-import 'package:better_player/src/asms/better_player_asms_track.dart';
-import 'package:better_player/src/asms/better_player_asms_utils.dart';
-import 'package:better_player/src/configuration/better_player_configuration.dart';
 import 'package:better_player/src/configuration/better_player_controller_event.dart';
-import 'package:better_player/src/configuration/better_player_drm_type.dart';
-import 'package:better_player/src/configuration/better_player_event.dart';
-import 'package:better_player/src/configuration/better_player_event_type.dart';
-import 'package:better_player/src/configuration/better_player_translations.dart';
-import 'package:better_player/src/configuration/better_player_video_format.dart';
-import 'package:better_player/src/core/better_player_controller_provider.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:better_player/src/subtitles/better_player_subtitle.dart';
 import 'package:better_player/src/subtitles/better_player_subtitles_factory.dart';
@@ -53,6 +41,13 @@ class BetterPlayerController {
   ///Instance of video player controller which is adapter used to communicate
   ///between flutter high level code and lower level native code.
   VideoPlayerController? videoPlayerController;
+
+  ///Controls configuration
+  late BetterPlayerControlsConfiguration _betterPlayerControlsConfiguration;
+
+  ///Controls configuration
+  BetterPlayerControlsConfiguration get betterPlayerControlsConfiguration =>
+      _betterPlayerControlsConfiguration;
 
   ///Expose all active eventListeners
   List<Function(BetterPlayerEvent)?> get eventListeners =>
@@ -151,6 +146,9 @@ class BetterPlayerController {
   ///in configuration.
   double? _overriddenAspectRatio;
 
+  ///Overridden fit which will be used instead of fit passed in configuration.
+  BoxFit? _overriddenFit;
+
   ///Was Picture in Picture opened.
   bool _wasInPipMode = false;
 
@@ -217,6 +215,8 @@ class BetterPlayerController {
     this.betterPlayerPlaylistConfiguration,
     BetterPlayerDataSource? betterPlayerDataSource,
   }) {
+    this._betterPlayerControlsConfiguration =
+        betterPlayerConfiguration.controlsConfiguration;
     _eventListeners.add(eventListener);
     if (betterPlayerDataSource != null) {
       setupDataSource(betterPlayerDataSource);
@@ -740,7 +740,7 @@ class BetterPlayerController {
   void toggleControlsVisibility(bool isVisible) {
     _postEvent(isVisible
         ? BetterPlayerEvent(BetterPlayerEventType.controlsVisible)
-        : BetterPlayerEvent(BetterPlayerEventType.controlsHidden));
+        : BetterPlayerEvent(BetterPlayerEventType.controlsHiddenEnd));
   }
 
   ///Send player event. Shouldn't be used manually.
@@ -1039,6 +1039,19 @@ class BetterPlayerController {
     return _overriddenAspectRatio ?? betterPlayerConfiguration.aspectRatio;
   }
 
+  // ignore: use_setters_to_change_properties
+  ///Setup overridden fit.
+  void setOverriddenFit(BoxFit fit) {
+    _overriddenFit = fit;
+  }
+
+  ///Get fit used in current video. If fit is null, then fit from
+  ///BetterPlayerConfiguration will be used. Otherwise [_overriddenFit] will be
+  ///used.
+  BoxFit getFit() {
+    return _overriddenFit ?? betterPlayerConfiguration.fit;
+  }
+
   ///Enable Picture in Picture (PiP) mode. [betterPlayerGlobalKey] is required
   ///to open PiP mode in iOS. When device is not supported, PiP mode won't be
   ///open.
@@ -1249,6 +1262,13 @@ class BetterPlayerController {
       BetterPlayerDataSource betterPlayerDataSource) async {
     return VideoPlayerController?.stopPreCache(betterPlayerDataSource.url,
         betterPlayerDataSource.cacheConfiguration?.key);
+  }
+
+  /// Sets the new [betterPlayerControlsConfiguration] instance in the
+  /// controller.
+  void setBetterPlayerControlsConfiguration(
+      BetterPlayerControlsConfiguration betterPlayerControlsConfiguration) {
+    this._betterPlayerControlsConfiguration = betterPlayerControlsConfiguration;
   }
 
   /// Add controller internal event.

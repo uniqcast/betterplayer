@@ -1,11 +1,8 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:better_player/better_player.dart';
-import 'package:better_player/src/asms/better_player_asms_audio_track.dart';
-import 'package:better_player/src/asms/better_player_asms_track.dart';
 import 'package:better_player/src/controls/better_player_clickable_widget.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
-import 'package:better_player/src/video_player/video_player.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +18,8 @@ abstract class BetterPlayerControlsState<T extends StatefulWidget>
   BetterPlayerControlsConfiguration get betterPlayerControlsConfiguration;
 
   VideoPlayerValue? get latestValue;
+
+  bool controlsNotVisible = true;
 
   void cancelAndRestartTimer();
 
@@ -516,5 +515,16 @@ abstract class BetterPlayerControlsState<T extends StatefulWidget>
   ///right directionality.
   Widget buildLTRDirectionality(Widget child) {
     return Directionality(textDirection: TextDirection.ltr, child: child);
+  }
+
+  ///Called when player controls visibility should be changed.
+  void changePlayerControlsNotVisible(bool notVisible) {
+    setState(() {
+      if (notVisible) {
+        betterPlayerController?.postEvent(
+            BetterPlayerEvent(BetterPlayerEventType.controlsHiddenStart));
+      }
+      controlsNotVisible = notVisible;
+    });
   }
 }

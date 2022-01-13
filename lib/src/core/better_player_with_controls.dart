@@ -5,9 +5,7 @@ import 'package:better_player/better_player.dart';
 import 'package:better_player/src/configuration/better_player_controller_event.dart';
 import 'package:better_player/src/controls/better_player_cupertino_controls.dart';
 import 'package:better_player/src/controls/better_player_material_controls.dart';
-import 'package:better_player/src/core/better_player_controller.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
-import 'package:better_player/src/subtitles/better_player_subtitles_configuration.dart';
 import 'package:better_player/src/subtitles/better_player_subtitles_drawer.dart';
 import 'package:better_player/src/video_player/video_player.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +25,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
       widget.controller!.betterPlayerConfiguration.subtitlesConfiguration;
 
   BetterPlayerControlsConfiguration get controlsConfiguration =>
-      widget.controller!.betterPlayerConfiguration.controlsConfiguration;
+      widget.controller!.betterPlayerControlsConfiguration;
 
   final StreamController<bool> playerVisibilityStreamController =
       StreamController();
@@ -136,7 +134,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
             angle: rotation * pi / 180,
             child: _BetterPlayerVideoFitWidget(
               betterPlayerController,
-              betterPlayerController.betterPlayerConfiguration.fit,
+              betterPlayerController.getFit(),
             ),
           ),
           betterPlayerController.betterPlayerConfiguration.overlay ??
@@ -176,8 +174,8 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
 
       if (controlsConfiguration.customControlsBuilder != null &&
           playerTheme == BetterPlayerTheme.custom) {
-        return controlsConfiguration
-            .customControlsBuilder!(betterPlayerController);
+        return controlsConfiguration.customControlsBuilder!(
+            betterPlayerController, onControlsVisibilityChanged);
       } else if (playerTheme == BetterPlayerTheme.material) {
         return _buildMaterialControl();
       } else if (playerTheme == BetterPlayerTheme.cupertino) {
