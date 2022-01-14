@@ -59,9 +59,17 @@ NSString * DEFAULT_LICENSE_SERVER_URL = @"https://fps.ezdrm.com/api/licenses/";
 
         @try {
             NSLog(@"Response Get");
-            responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-
             NSError* error = nil;
+
+            responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+            
+            if (error != nil) {
+                errorOut = error
+                return nil
+            }
+            
+            error = nil
+
 
             NSLog(@"parse response");
             NSString *strISOLatin = [[NSString alloc] initWithData:responseData encoding:NSISOLatin1StringEncoding];
@@ -74,11 +82,14 @@ NSString * DEFAULT_LICENSE_SERVER_URL = @"https://fps.ezdrm.com/api/licenses/";
                 NSData *ckc = [[NSData alloc]initWithBase64EncodedString:ckcEncoded options:0];
                 return ckc;
             } else {
+                errorOut = error
+                return nil
                 NSLog(@"Error: %@", error);
             }
         }
         @catch (NSException* excp) {
             NSLog(@"SDK Error, SDK responded with Error: (error)");
+            return nil
         }
     }
     
