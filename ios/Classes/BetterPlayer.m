@@ -367,7 +367,7 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 
                 [values addObject:@[ @(start), @(end) ]];
             }
-            _eventSink(@{@"event" : @"bufferingUpdate", @"values" : values, @"key" : _key});
+            _eventSink(@{@"event" : @"bufferingUpdate", @"values" : values, @"key" : _key, @"duration" : @([self duration])});
         }
     }
     else if (context == presentationSizeContext){
