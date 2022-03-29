@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'package:better_player/better_player.dart';
-import 'package:better_player/src/controls/better_player_progress_colors.dart';
 import 'package:better_player/src/video_player/video_player.dart';
 import 'package:better_player/src/video_player/video_player_platform_interface.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class BetterPlayerMaterialVideoProgressBar extends StatefulWidget {
   BetterPlayerMaterialVideoProgressBar(
@@ -14,6 +12,7 @@ class BetterPlayerMaterialVideoProgressBar extends StatefulWidget {
     this.onDragEnd,
     this.onDragStart,
     this.onDragUpdate,
+    this.onTapDown,
     Key? key,
   })  : colors = colors ?? BetterPlayerProgressColors(),
         super(key: key);
@@ -24,6 +23,7 @@ class BetterPlayerMaterialVideoProgressBar extends StatefulWidget {
   final Function()? onDragStart;
   final Function()? onDragEnd;
   final Function()? onDragUpdate;
+  final Function()? onTapDown;
 
   @override
   _VideoProgressBarState createState() {
@@ -35,7 +35,7 @@ class _VideoProgressBarState
     extends State<BetterPlayerMaterialVideoProgressBar> {
   _VideoProgressBarState() {
     listener = () {
-      setState(() {});
+      if (mounted) setState(() {});
     };
   }
 
@@ -116,6 +116,9 @@ class _VideoProgressBarState
         }
         seekToRelativePosition(details.globalPosition);
         _setupUpdateBlockTimer();
+        if (widget.onTapDown != null) {
+          widget.onTapDown!();
+        }
       },
       child: Center(
         child: Container(

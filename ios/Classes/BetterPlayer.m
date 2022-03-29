@@ -314,6 +314,13 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 
 }
 
+- (int64_t) seekableDuration
+{
+    CMTimeRange seekableRange = [_player.currentItem.seekableTimeRanges.lastObject CMTimeRangeValue];
+    CGFloat seekableDuration = CMTimeGetSeconds(seekableRange.duration);
+    return seekableDuration * 1000;
+}
+
 - (void)observeValueForKeyPath:(NSString*)path
                       ofObject:(id)object
                         change:(NSDictionary*)change
@@ -367,7 +374,7 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 
                 [values addObject:@[ @(start), @(end) ]];
             }
-            _eventSink(@{@"event" : @"bufferingUpdate", @"values" : values, @"key" : _key});
+            _eventSink(@{@"event" : @"bufferingUpdate", @"values" : values, @"key" : _key, @"duration" : @([self duration])});
         }
     }
     else if (context == presentationSizeContext){
@@ -505,17 +512,22 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 }
 
 - (int64_t)duration {
-    CMTime time;
-    if (@available(iOS 13, *)) {
-        time =  [[_player currentItem] duration];
+    const BOOL isLive = CMTIME_IS_INDEFINITE([_player currentItem].duration);
+    if (isLive) {
+        return [self seekableDuration];
     } else {
-        time =  [[[_player currentItem] asset] duration];
-    }
-    if (!CMTIME_IS_INVALID(_player.currentItem.forwardPlaybackEndTime)) {
-        time = [[_player currentItem] forwardPlaybackEndTime];
-    }
+        CMTime time;
+        if (@available(iOS 13, *)) {
+            time =  [[_player currentItem] duration];
+        } else {
+            time =  [[[_player currentItem] asset] duration];
+        }
+        if (!CMTIME_IS_INVALID(_player.currentItem.forwardPlaybackEndTime)) {
+            time = [[_player currentItem] forwardPlaybackEndTime];
+        }
 
-    return [BetterPlayerTimeUtils FLTCMTimeToMillis:(time)];
+        return [BetterPlayerTimeUtils FLTCMTimeToMillis:(time)];
+    }
 }
 
 - (void)seekTo:(int)location {

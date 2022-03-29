@@ -1,3 +1,33 @@
+## 0.0.81
+* Fixed full screen button padding in material controls.
+* Added `setBetterPlayerControlsConfiguration` in `BetterPlayerController`.
+* Added `setOverriddenFit` in `BetterPlayerController`.
+
+## 0.0.80
+* Removed pedantic dependency.
+* Updated dependencies.
+* Fixed controls render issue for small player (by https://github.com/admarwick)
+* Fixed deprecated jCenter. Replaced jCenter with mavenCentral (by https://github.com/petoknm)
+* Fixed iOS GCDWebServer and PINCache import issue (by https://github.com/twogood)
+* Added is mounted check in player controls (by https://github.com/masoudk2000)
+* Updated installation documentation page.
+
+## 0.0.79
+* Fixed kotlin version issue.
+
+## 0.0.78
+* [BREAKING_CHANGE] Split controlsHidden into controlsHiddenStart and controlsHiddenEnd.
+* [BREAKING_CHANGE] Added to Function(bool) onPlayerVisibilityChanged to customControlsBuilder in [BetterPlayerConfiguration].
+* Migrated android native code to Kotlin.
+* Updated ExoPlayer version to 2.15.1.
+* Updated screenshots.
+* Added onTapDown handle for material and cupertino progress bar to handle show and hide of controls.
+* Fixed crash related to Android 12.
+* Fixed issue with full url of subtitle for HLS data source.
+* Fixed install page from docs.
+* Fixed one of the showcase images.
+* Fixed video in list example.
+
 ## 0.0.77
 * Fixed full screen safe area issue in cupertino controls.
 * Fixed subtitles duplication after changing data source.
