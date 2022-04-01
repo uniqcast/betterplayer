@@ -4,7 +4,6 @@
 package com.jhomlala.better_player
 
 import io.flutter.plugin.common.EventChannel.EventSink
-import java.util.ArrayList
 
 /**
  * And implementation of [EventSink] which can wrap an underlying sink.

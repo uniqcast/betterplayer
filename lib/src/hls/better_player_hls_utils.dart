@@ -42,12 +42,10 @@ class BetterPlayerHlsUtils {
       final parsedPlaylist = await HlsPlaylistParser.create()
           .parseString(Uri.parse(masterPlaylistUrl), data);
       if (parsedPlaylist is HlsMasterPlaylist) {
-        parsedPlaylist.variants.forEach(
-          (variant) {
+        for (var variant in parsedPlaylist.variants) {
             tracks.add(BetterPlayerAsmsTrack('', variant.format.width,
                 variant.format.height, variant.format.bitrate, 0, '', ''));
-          },
-        );
+          }
       }
 
       if (tracks.isNotEmpty) {
