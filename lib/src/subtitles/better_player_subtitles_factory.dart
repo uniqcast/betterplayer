@@ -47,12 +47,14 @@ class BetterPlayerSubtitlesFactory {
       final List<BetterPlayerSubtitle> subtitles = [];
       for (final String? url in source.urls!) {
         final request = await client.getUrl(Uri.parse(url!));
-        source.headers?.keys.forEach((key) {
-          final value = source.headers![key];
-          if (value != null) {
-            request.headers.add(key, value);
+        if (source.headers != null) {
+          for (var key in source.headers!.keys) {
+            final value = source.headers![key];
+            if (value != null) {
+              request.headers.add(key, value);
+            }
           }
-        });
+        }
         final response = await request.close();
         final data = await response.transform(const Utf8Decoder()).join();
         final cacheList = _parseString(data);

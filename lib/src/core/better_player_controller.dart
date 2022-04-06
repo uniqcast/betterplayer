@@ -215,7 +215,7 @@ class BetterPlayerController {
     this.betterPlayerPlaylistConfiguration,
     BetterPlayerDataSource? betterPlayerDataSource,
   }) {
-    this._betterPlayerControlsConfiguration =
+    _betterPlayerControlsConfiguration =
         betterPlayerConfiguration.controlsConfiguration;
     _eventListeners.add(eventListener);
     if (betterPlayerDataSource != null) {
@@ -317,7 +317,7 @@ class BetterPlayerController {
       if (betterPlayerDataSource?.useAsmsSubtitles == true) {
         final List<BetterPlayerAsmsSubtitle> asmsSubtitles =
             _response.subtitles ?? [];
-        asmsSubtitles.forEach((BetterPlayerAsmsSubtitle asmsSubtitle) {
+        for (var asmsSubtitle in asmsSubtitles) {
           _betterPlayerSubtitlesSourceList.add(
             BetterPlayerSubtitlesSource(
               type: BetterPlayerSubtitlesSourceType.network,
@@ -329,7 +329,7 @@ class BetterPlayerController {
               selectedByDefault: asmsSubtitle.isDefault,
             ),
           );
-        });
+        }
       }
 
       ///Load audio tracks
@@ -1268,7 +1268,7 @@ class BetterPlayerController {
   /// controller.
   void setBetterPlayerControlsConfiguration(
       BetterPlayerControlsConfiguration betterPlayerControlsConfiguration) {
-    this._betterPlayerControlsConfiguration = betterPlayerControlsConfiguration;
+    _betterPlayerControlsConfiguration = betterPlayerControlsConfiguration;
   }
 
   /// Add controller internal event.
@@ -1301,7 +1301,9 @@ class BetterPlayerController {
       _controllerEventStreamController.close();
 
       ///Delete files async
-      _tempFiles.forEach((file) => file.delete());
+      for (var file in _tempFiles) {
+        file.delete();
+      }
     }
   }
 }

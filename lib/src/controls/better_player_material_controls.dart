@@ -193,7 +193,7 @@ class _BetterPlayerMaterialControlsState
               opacity: controlsNotVisible ? 0.0 : 1.0,
               duration: _controlsConfiguration.controlsHideTime,
               onEnd: _onPlayerHide,
-              child: Container(
+              child: SizedBox(
                 height: _controlsConfiguration.controlBarHeight,
                 width: double.infinity,
                 child: Row(
@@ -241,7 +241,7 @@ class _BetterPlayerMaterialControlsState
             opacity: hideStuff ? 0.0 : 1.0,
             duration: betterPlayerControlsConfiguration.controlsHideTime,
             onEnd: onPlayerHide,
-            child: Container(
+            child: SizedBox(
               height: betterPlayerControlsConfiguration.controlBarHeight,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -281,7 +281,7 @@ class _BetterPlayerMaterialControlsState
       opacity: controlsNotVisible ? 0.0 : 1.0,
       duration: _controlsConfiguration.controlsHideTime,
       onEnd: _onPlayerHide,
-      child: Container(
+      child: SizedBox(
         height: _controlsConfiguration.controlBarHeight + 20.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -335,7 +335,7 @@ class _BetterPlayerMaterialControlsState
 
   Widget _buildExpandButton() {
     return Padding(
-      padding: EdgeInsets.only(right: 12.0),
+      padding: const EdgeInsets.only(right: 12.0),
       child: BetterPlayerMaterialClickableWidget(
         onTap: _onExpandCollapse,
         child: AnimatedOpacity(
