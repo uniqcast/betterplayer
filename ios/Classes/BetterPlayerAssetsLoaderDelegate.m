@@ -40,59 +40,64 @@ NSString * DEFAULT_LICENSE_SERVER_URL = @"https://fps.ezdrm.com/api/licenses/";
     NSLog(@"Generate URL");
     NSURL * ksmURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@",finalLicenseURL]];
 
+    if (requestBytes == nil) {
+        NSLog(@"error, requestBytes is null");
+        return nil;
+    }
+
     NSLog(@"Generate b64 spc");
     NSString *spc = [requestBytes base64EncodedStringWithOptions:0];
-    if (spc != nil) {
-        NSLog(@"Generate Payload");
-        assetId = [assetId stringByReplacingOccurrencesOfString:@"skd://" withString:@""];
-        NSDictionary *jsonBodyDict = @{@"spc":spc, @"assetId":assetId};
-        NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:jsonBodyDict options:kNilOptions error:nil];
-        
-        NSLog(@"prepare request");
-        NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:ksmURL];
-        [request setHTTPMethod:@"POST"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
-        [request setValue:jwtToken forHTTPHeaderField:@"Authorization" ];
-        [request setHTTPBody:jsonBodyData];
+    if (spc == nil) {
+        NSLog(@"error, spc is null");
+        return nil;
+    }
 
+    NSLog(@"Generate Payload");
+    assetId = [assetId stringByReplacingOccurrencesOfString:@"skd://" withString:@""];
+    NSDictionary *jsonBodyDict = @{@"spc":spc, @"assetId":assetId};
+    NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:jsonBodyDict options:kNilOptions error:nil];
 
+    NSLog(@"prepare request");
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:ksmURL];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
+    [request setValue:jwtToken forHTTPHeaderField:@"Authorization" ];
+    [request setHTTPBody:jsonBodyData];
 
-        @try {
-            NSLog(@"Response Get");
-            NSError* error = nil;
+    @try {
+        NSLog(@"Response Get");
+        NSError* error = nil;
 
-            responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-            
-            if (error != nil) {
-                errorOut = error;
-                return nil;
-            }
-            
-            error = nil;
+        responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
 
-
-            NSLog(@"parse response");
-            NSString *strISOLatin = [[NSString alloc] initWithData:responseData encoding:NSISOLatin1StringEncoding];
-            NSData *dataUTF8 = [strISOLatin dataUsingEncoding:NSUTF8StringEncoding];
-
-            id dict = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
-
-            if (dict != nil) {
-                NSString *ckcEncoded = [dict objectForKey:@"ckc"];
-                NSData *ckc = [[NSData alloc]initWithBase64EncodedString:ckcEncoded options:0];
-                return ckc;
-            } else {
-                errorOut = error;
-                return nil;
-                NSLog(@"Error: %@", error);
-            }
-        }
-        @catch (NSException* excp) {
-            NSLog(@"SDK Error, SDK responded with Error: (error)");
+        if (error != nil) {
+            errorOut = error;
             return nil;
         }
+
+        error = nil;
+
+
+        NSLog(@"parse response");
+        NSString *strISOLatin = [[NSString alloc] initWithData:responseData encoding:NSISOLatin1StringEncoding];
+        NSData *dataUTF8 = [strISOLatin dataUsingEncoding:NSUTF8StringEncoding];
+
+        id dict = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
+
+        if (dict != nil) {
+            NSString *ckcEncoded = [dict objectForKey:@"ckc"];
+            NSData *ckc = [[NSData alloc]initWithBase64EncodedString:ckcEncoded options:0];
+            return ckc;
+        } else {
+            errorOut = error;
+            return nil;
+            NSLog(@"Error: %@", error);
+        }
     }
-    
+    @catch (NSException* excp) {
+        NSLog(@"SDK Error, SDK responded with Error: (error)");
+        return nil;
+    }
 }
 
 /*------------------------------------------

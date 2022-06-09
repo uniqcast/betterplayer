@@ -2,10 +2,11 @@ package com.jhomlala.better_player
 
 import android.content.Context
 import android.util.Log
-import com.google.android.exoplayer2.database.StandaloneDatabaseProvider
-import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
 import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
+import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import java.io.File
+import java.lang.Exception
 
 object BetterPlayerCache {
     @Volatile
@@ -17,7 +18,7 @@ object BetterPlayerCache {
                     instance = SimpleCache(
                         File(context.cacheDir, "betterPlayerCache"),
                         LeastRecentlyUsedCacheEvictor(cacheFileSize),
-                        StandaloneDatabaseProvider(context)
+                        ExoDatabaseProvider(context)
                     )
                 }
             }
