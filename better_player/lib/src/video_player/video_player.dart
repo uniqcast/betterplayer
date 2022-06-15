@@ -232,7 +232,8 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           _timer?.cancel();
           break;
         case VideoEventType.bufferingUpdate:
-          value = value.copyWith(buffered: event.buffered);
+          value = value.copyWith(
+              buffered: event.buffered, duration: event.duration);
           break;
         case VideoEventType.bufferingStart:
           value = value.copyWith(isBuffering: true);

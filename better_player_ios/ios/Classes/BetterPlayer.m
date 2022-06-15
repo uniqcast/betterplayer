@@ -221,7 +221,7 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
         if (certificateUrl && certificateUrl != [NSNull null] && [certificateUrl length] > 0) {
             NSURL * certificateNSURL = [[NSURL alloc] initWithString: certificateUrl];
             NSURL * licenseNSURL = [[NSURL alloc] initWithString: licenseUrl];
-            _loaderDelegate = [[BetterPlayerEzDrmAssetsLoaderDelegate alloc] init:certificateNSURL withLicenseURL:licenseNSURL];
+            _loaderDelegate = [[BetterPlayerAssetsLoaderDelegate alloc] init:certificateNSURL withLicenseURL:licenseNSURL];
             dispatch_queue_attr_t qos = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_DEFAULT, -1);
             dispatch_queue_t streamQueue = dispatch_queue_create("streamQueue", qos);
             [asset.resourceLoader setDelegate:_loaderDelegate queue:streamQueue];
@@ -318,6 +318,13 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 
 }
 
+- (int64_t) seekableDuration
+{
+    CMTimeRange seekableRange = [_player.currentItem.seekableTimeRanges.lastObject CMTimeRangeValue];
+    CGFloat seekableDuration = CMTimeGetSeconds(seekableRange.duration);
+    return seekableDuration * 1000;
+}
+
 - (void)observeValueForKeyPath:(NSString*)path
                       ofObject:(id)object
                         change:(NSDictionary*)change
@@ -371,7 +378,7 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 
                 [values addObject:@[ @(start), @(end) ]];
             }
-            _eventSink(@{@"event" : @"bufferingUpdate", @"values" : values, @"key" : _key});
+            _eventSink(@{@"event" : @"bufferingUpdate", @"values" : values, @"key" : _key, @"duration" : @([self duration])});
         }
     }
     else if (context == presentationSizeContext){
@@ -509,17 +516,22 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 }
 
 - (int64_t)duration {
-    CMTime time;
-    if (@available(iOS 13, *)) {
-        time =  [[_player currentItem] duration];
+    const BOOL isLive = CMTIME_IS_INDEFINITE([_player currentItem].duration);
+    if (isLive) {
+        return [self seekableDuration];
     } else {
-        time =  [[[_player currentItem] asset] duration];
-    }
-    if (!CMTIME_IS_INVALID(_player.currentItem.forwardPlaybackEndTime)) {
-        time = [[_player currentItem] forwardPlaybackEndTime];
-    }
+        CMTime time;
+        if (@available(iOS 13, *)) {
+            time =  [[_player currentItem] duration];
+        } else {
+            time =  [[[_player currentItem] asset] duration];
+        }
+        if (!CMTIME_IS_INVALID(_player.currentItem.forwardPlaybackEndTime)) {
+            time = [[_player currentItem] forwardPlaybackEndTime];
+        }
 
-    return [BetterPlayerTimeUtils FLTCMTimeToMillis:(time)];
+        return [BetterPlayerTimeUtils FLTCMTimeToMillis:(time)];
+    }
 }
 
 - (void)seekTo:(int)location {

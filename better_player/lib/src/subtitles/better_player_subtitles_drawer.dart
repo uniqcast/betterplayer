@@ -1,8 +1,8 @@
 import 'dart:async';
+
 import 'package:better_player/better_player.dart';
 import 'package:better_player/src/subtitles/better_player_subtitle.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 class BetterPlayerSubtitlesDrawer extends StatefulWidget {
   final List<BetterPlayerSubtitle> subtitles;
@@ -98,7 +98,7 @@ class _BetterPlayerSubtitlesDrawerState
     final List<Widget> textWidgets =
         subtitles.map((text) => _buildSubtitleTextWidget(text)).toList();
 
-    return Container(
+    return SizedBox(
       height: double.infinity,
       width: double.infinity,
       child: Padding(
@@ -158,9 +158,9 @@ class _BetterPlayerSubtitlesDrawerState
   }
 
   Widget _buildHtmlWidget(String text, TextStyle textStyle) {
-    return HtmlWidget(
+    return Text(
       text,
-      textStyle: textStyle,
+      style: textStyle,
     );
   }
 

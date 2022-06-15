@@ -17,7 +17,7 @@ class BetterPlayerDashUtils {
       int audiosCount = 0;
       final document = XmlDocument.parse(data);
       final adaptationSets = document.findAllElements('AdaptationSet');
-      adaptationSets.forEach((node) {
+      for (var node in adaptationSets) {
         final mimeType = node.getAttribute('mimeType');
 
         if (mimeType != null) {
@@ -30,7 +30,7 @@ class BetterPlayerDashUtils {
             subtitles.add(parseSubtitle(masterPlaylistUrl, node));
           }
         }
-      });
+      }
     } catch (exception) {
       BetterPlayerUtils.log("Exception on dash parse: $exception");
     }
@@ -43,7 +43,7 @@ class BetterPlayerDashUtils {
 
     final representations = node.findAllElements('Representation');
 
-    representations.forEach((representation) {
+    for (var representation in representations) {
       final String? id = representation.getAttribute('id');
       final int width = int.parse(representation.getAttribute('width') ?? '0');
       final int height =
@@ -56,7 +56,7 @@ class BetterPlayerDashUtils {
       final String? mimeType = MimeTypes.getMediaMimeType(codecs ?? '');
       tracks.add(BetterPlayerAsmsTrack(
           id, width, height, bitrate, frameRate, codecs, mimeType));
-    });
+    }
 
     return tracks;
   }

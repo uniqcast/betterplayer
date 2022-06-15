@@ -495,6 +495,7 @@ internal class BetterPlayer(
         if (isFromBufferingStart || bufferedPosition != lastSendBufferedPosition) {
             val event: MutableMap<String, Any> = HashMap()
             event["event"] = "bufferingUpdate"
+            event["duration"] = getDuration()
             val range: List<Number?> = listOf(0, bufferedPosition)
             // iOS supports a list of buffered ranges, so here is a list with a single range.
             event["values"] = listOf(range)
