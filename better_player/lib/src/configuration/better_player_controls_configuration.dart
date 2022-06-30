@@ -116,9 +116,6 @@ class BetterPlayerControlsConfiguration {
   ///Flag used to show/hide audio tracks
   final bool enableAudioTracks;
 
-  ///Custom items of overflow menu
-  final List<BetterPlayerOverflowMenuItem> overflowMenuCustomItems;
-
   ///Icon of the overflow menu
   final IconData overflowMenuIcon;
 
@@ -198,7 +195,6 @@ class BetterPlayerControlsConfiguration {
     this.enableQualities = true,
     this.enablePip = true,
     this.enableRetry = true,
-    this.overflowMenuCustomItems = const [],
     this.overflowMenuIcon = Icons.more_vert_outlined,
     this.pipMenuIcon = Icons.picture_in_picture_outlined,
     this.playbackSpeedIcon = Icons.shutter_speed_outlined,
