@@ -21,7 +21,7 @@ class CreateMessage {
   int? bufferForPlaybackAfterRebufferMs;
 }
 
-class DataSourceMessage{
+class DataSourceMessage {
   int? textureId;
   String? key;
   String? asset;
@@ -41,18 +41,18 @@ class DataSourceMessage{
   int? overriddenDuration;
   String? licenseUrl;
   String? certificateUrl;
-  Map<String?,String?>? drmHeaders;
+  Map<String?, String?>? drmHeaders;
   String? activityName;
   String? clearKey;
   String? videoExtension;
 }
 
-class SetLoopingMessage{
+class SetLoopingMessage {
   int? textureId;
   bool? looping;
 }
 
-class SetTrackParametersMessage{
+class SetTrackParametersMessage {
   int? textureId;
   int? width;
   int? height;
@@ -69,7 +69,7 @@ class PositionMessage {
   int? position;
 }
 
-class EnablePictureInPictureMessage{
+class EnablePictureInPictureMessage {
   int? textureId;
   double? top;
   double? left;
@@ -77,7 +77,7 @@ class EnablePictureInPictureMessage{
   double? height;
 }
 
-class SetAudioTrack{
+class SetAudioTrack {
   int? textureId;
   String? name;
   int? index;
@@ -88,7 +88,7 @@ class SetMixWithOthersMessage {
   bool? mixWithOthers;
 }
 
-class InnerPreCacheMessage{
+class InnerPreCacheMessage {
   String? key;
   String? uri;
   String? certificateUrl;
@@ -100,15 +100,14 @@ class InnerPreCacheMessage{
   String? videoExtension;
 }
 
-class PreCacheMessage{
+class PreCacheMessage {
   InnerPreCacheMessage? dataSource;
 }
 
-class StopPreCacheMessage{
+class StopPreCacheMessage {
   String? url;
   String? cacheKey;
 }
-
 
 @HostApi(dartHostTestHandler: 'TestHostVideoPlayerApi')
 abstract class BetterPlayerApi {
@@ -133,7 +132,6 @@ abstract class BetterPlayerApi {
   void clearCache();
   void preCache(PreCacheMessage msg);
   void stopPreCache(StopPreCacheMessage msg);
-
 }
 
 void configurePigeon(PigeonOptions opts) {

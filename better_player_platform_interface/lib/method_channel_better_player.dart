@@ -4,13 +4,10 @@
 import 'dart:async';
 
 import 'package:better_player_platform_interface/messages.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'better_player_platform_interface.dart';
-
-const MethodChannel _channel = MethodChannel('better_player_channel');
 
 /// An implementation of [BetterPlayerPlatform] that uses method channels.
 class MethodChannelBetterPlayer extends BetterPlayerPlatform {
@@ -242,8 +239,8 @@ class MethodChannelBetterPlayer extends BetterPlayerPlatform {
   @override
   Future<void> stopPreCache(String url, String? cacheKey) {
     StopPreCacheMessage stopPreCacheMessage = StopPreCacheMessage()
-    ..url = url
-    ..cacheKey = cacheKey;
+      ..url = url
+      ..cacheKey = cacheKey;
     return _api.stopPreCache(stopPreCacheMessage);
   }
 
@@ -345,19 +342,6 @@ class MethodChannelBetterPlayer extends BetterPlayerPlatform {
           );
       }
     });
-  }
-
-  @override
-  Widget buildView(int? textureId) {
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return UiKitView(
-        viewType: 'com.jhomlala/better_player',
-        creationParamsCodec: const StandardMessageCodec(),
-        creationParams: {'textureId': textureId!},
-      );
-    } else {
-      return Texture(textureId: textureId!);
-    }
   }
 
   EventChannel _eventChannelFor(int? textureId) {
