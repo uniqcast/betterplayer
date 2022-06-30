@@ -64,6 +64,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
+    version: "1.16.0"
   cupertino_icons:
     dependency: "direct main"
     description:
