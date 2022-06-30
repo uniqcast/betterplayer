@@ -3,16 +3,14 @@
 // found in the LICENSE file.
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
+import 'package:better_player_platform_interface/better_player_platform_interface.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:better_player_platform_interface/better_player_platform_interface.dart';
 
 const MethodChannel _channel = MethodChannel('better_player_channel');
 
 /// An implementation of [BetterPlayerPlatform] that uses method channels.
 class IosBetterPlayer extends BetterPlayerPlatform {
-
   /// Registers this class as the default instance of [BetterPlayerPlatform].
   static void registerWith() {
     BetterPlayerPlatform.instance = IosBetterPlayer();
@@ -46,7 +44,7 @@ class IosBetterPlayer extends BetterPlayerPlatform {
           'maxBufferMs': bufferingConfiguration.maxBufferMs,
           'bufferForPlaybackMs': bufferingConfiguration.bufferForPlaybackMs,
           'bufferForPlaybackAfterRebufferMs':
-          bufferingConfiguration.bufferForPlaybackAfterRebufferMs,
+              bufferingConfiguration.bufferForPlaybackAfterRebufferMs,
         },
       );
 
@@ -208,18 +206,18 @@ class IosBetterPlayer extends BetterPlayerPlatform {
   Future<Duration> getPosition(int? textureId) async {
     return Duration(
         milliseconds: await _channel.invokeMethod<int>(
-          'position',
-          <String, dynamic>{'textureId': textureId},
-        ) ??
+              'position',
+              <String, dynamic>{'textureId': textureId},
+            ) ??
             0);
   }
 
   @override
   Future<DateTime?> getAbsolutePosition(int? textureId) async {
     final int milliseconds = await _channel.invokeMethod<int>(
-      'absolutePosition',
-      <String, dynamic>{'textureId': textureId},
-    ) ??
+          'absolutePosition',
+          <String, dynamic>{'textureId': textureId},
+        ) ??
         0;
 
     if (milliseconds <= 0) return null;
@@ -423,15 +421,11 @@ class IosBetterPlayer extends BetterPlayerPlatform {
 
   @override
   Widget buildView(int? textureId) {
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return UiKitView(
-        viewType: 'com.jhomlala/better_player',
-        creationParamsCodec: const StandardMessageCodec(),
-        creationParams: {'textureId': textureId!},
-      );
-    } else {
-      return Texture(textureId: textureId!);
-    }
+    return UiKitView(
+      viewType: 'com.jhomlala/better_player',
+      creationParamsCodec: const StandardMessageCodec(),
+      creationParams: {'textureId': textureId!},
+    );
   }
 
   EventChannel _eventChannelFor(int? textureId) {
