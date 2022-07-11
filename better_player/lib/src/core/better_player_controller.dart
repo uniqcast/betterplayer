@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:better_player/better_player.dart';
 import 'package:better_player/src/configuration/better_player_controller_event.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
@@ -8,6 +9,7 @@ import 'package:better_player/src/subtitles/better_player_subtitles_factory.dart
 import 'package:better_player/src/video_player/video_player.dart';
 import 'package:better_player_platform_interface/better_player_platform_interface.dart';
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -1067,6 +1069,10 @@ class BetterPlayerController {
       _wasInFullScreenBeforePiP = _isFullScreen;
       _wasControlsEnabledBeforePiP = _controlsEnabled;
       setControlsEnabled(false);
+      if (kIsWeb) {
+        // TODO;
+        return;
+      }
       if (Platform.isAndroid) {
         _wasInFullScreenBeforePiP = _isFullScreen;
         await videoPlayerController?.enablePictureInPicture(

@@ -24,6 +24,8 @@ dependencies:
     path: ../better_player_android
   better_player_ios:
     path: ../better_player_ios
+  better_player_web:
+    path: ../better_player_web
   visibility_detector: ^0.3.3
   path_provider: ^2.0.10
   collection: ^1.16.0

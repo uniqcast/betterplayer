@@ -1,0 +1,23 @@
+name: better_player_web
+version: 1.0.0
+
+flutter:
+  plugin:
+    platforms:
+      web:
+        pluginClass: BetterPlayerWeb
+        fileName: better_player_web.dart
+
+dependencies:
+  flutter:
+    sdk: flutter
+  video_js:
+    path: '../../video_js'
+  flutter_web_plugins:
+    sdk: flutter
+  better_player_platform_interface:
+    path: '../better_player_platform_interface'
+
+environment:
+  sdk: '>=2.17.0 <3.0.0'
+  flutter: ">=3.0.0"

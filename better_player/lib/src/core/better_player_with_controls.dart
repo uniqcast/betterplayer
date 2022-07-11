@@ -6,6 +6,7 @@ import 'package:better_player/src/configuration/better_player_controller_event.d
 import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:better_player/src/subtitles/better_player_subtitles_drawer.dart';
 import 'package:better_player/src/video_player/video_player.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BetterPlayerWithControls extends StatefulWidget {
@@ -270,7 +271,8 @@ class _BetterPlayerVideoFitWidgetState
 
   @override
   Widget build(BuildContext context) {
-    if (_initialized && _started) {
+    // need to have the player rendered on web all the time so can use the controller
+    if (kIsWeb || (_initialized && _started)) {
       return Center(
         child: ClipRect(
           child: SizedBox(
