@@ -93,6 +93,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   }
 
   late VideoJsController controller;
+  late VideoJsWidget videoJsWidget;
 
   @override
   Future<void> init() async {
@@ -110,6 +111,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
         suppressNotSupportedError: false,
       ),
     );
+    videoJsWidget = VideoJsWidget(videoJsController: controller);
   }
 
   @override
@@ -130,6 +132,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       dataSource.uri ?? '',
       type: dataSource.videoExtension ?? 'application/x-mpegURL',
     );
+    await Future.delayed(Duration(seconds: 2));
     VideoJsResults()
         .onVolumeFromJsStream
         .add(ResultFromVideoJs(playerId, 'onReady', 'true'));
@@ -143,11 +146,13 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> play(int? textureId) async {
+    await Future.delayed(Duration(seconds: 1));
     controller.play();
   }
 
   @override
   Future<void> pause(int? textureId) async {
+    await Future.delayed(Duration(seconds: 1));
     controller.pause();
   }
 
@@ -157,15 +162,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   }
 
   @override
-  Future<void> setSpeed(int? textureId, double speed) async {
-    // return _channel.invokeMethod<void>(
-    //   'setSpeed',
-    //   <String, dynamic>{
-    //     'textureId': textureId,
-    //     'speed': speed,
-    //   },
-    // );
-  }
+  Future<void> setSpeed(int? textureId, double speed) async {}
 
   @override
   Future<void> setTrackParameters(
@@ -308,6 +305,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Widget buildView(int? textureId) {
-    return VideoJsWidget(videoJsController: controller);
+    return videoJsWidget;
   }
 }

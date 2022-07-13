@@ -1,6 +1,8 @@
 name: better_player_web
 version: 1.0.0
 
+publish_to: none
+
 flutter:
   plugin:
     platforms:
@@ -11,10 +13,21 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  video_js:
-    path: '../../video_js'
   flutter_web_plugins:
     sdk: flutter
+
+  video_js:
+    git:
+      url: https://github.com/uniqcast/video_js
+      ref: 60d77f86506ac5ad4dab540c87812d9d77016363
+  #  video_js:
+  #    path: '../../video_js'
+
+  #  better_player_platform_interface:
+  #    git:
+  #      url: git://github.com/flutter/packages.git
+  #      ref: TODO
+  #      path: better_player_platform_interface
   better_player_platform_interface:
     path: '../better_player_platform_interface'
 

@@ -29,6 +29,13 @@ packages:
       relative: true
     source: path
     version: "1.0.0"
+  better_player_web:
+    dependency: "direct main"
+    description:
+      path: "../better_player_web"
+      relative: true
+    source: path
+    version: "1.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -63,7 +70,6 @@ packages:
       name: collection
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.16.0"
     version: "1.16.0"
   cupertino_icons:
     dependency: "direct main"
@@ -300,6 +306,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  video_js:
+    dependency: transitive
+    description:
+      path: "."
+      ref: "60d77f86506ac5ad4dab540c87812d9d77016363"
+      resolved-ref: "60d77f86506ac5ad4dab540c87812d9d77016363"
+      url: "https://github.com/uniqcast/video_js"
+    source: git
+    version: "0.1.3"
   visibility_detector:
     dependency: "direct main"
     description:
