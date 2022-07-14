@@ -1,0 +1,45 @@
+name: better_player
+description: Advanced video player based on video_player and Chewie. It's solves many typical use cases and it's easy to run.
+version: 0.1.0
+homepage: https://github.com/uniqcast/betterplayer
+
+publish_to: none
+
+environment:
+  sdk: '>=2.17.0 <3.0.0'
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.5
+  wakelock: ^0.6.1+2
+  meta: ^1.7.0
+  #video_player_platform_interface: ^1.0.0
+  better_player_platform_interface:
+    path: ../better_player_platform_interface
+  better_player_android:
+    path: ../better_player_android
+  better_player_ios:
+    path: ../better_player_ios
+  better_player_web:
+    path: ../better_player_web
+  visibility_detector: ^0.3.3
+  path_provider: ^2.0.10
+  collection: ^1.16.0
+  xml: ^6.1.0
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: better_player_android
+      ios:
+        default_package: better_player_ios
