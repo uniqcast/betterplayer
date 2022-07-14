@@ -367,6 +367,7 @@ class AndroidBetterPlayer extends BetterPlayerPlatform {
             eventType: VideoEventType.bufferingUpdate,
             key: key,
             buffered: values.map<DurationRange>(_toDurationRange).toList(),
+            duration: Duration(milliseconds: map['duration'] as int),
           );
         case 'bufferingStart':
           return VideoEvent(
