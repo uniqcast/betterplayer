@@ -1,8 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:better_player/src/dash/better_player_dash_utils.dart';
 import 'package:better_player/src/hls/better_player_hls_utils.dart';
+import 'package:dio/dio.dart';
 
 import 'better_player_asms_data_holder.dart';
 
@@ -10,9 +9,6 @@ import 'better_player_asms_data_holder.dart';
 class BetterPlayerAsmsUtils {
   static const String _hlsExtension = "m3u8";
   static const String _dashExtension = "mpd";
-
-  static final HttpClient _httpClient = HttpClient()
-    ..connectionTimeout = const Duration(seconds: 5);
 
   ///Check if given url is HLS / DASH-type data source.
   static bool isDataSourceAsms(String url) =>
@@ -39,18 +35,9 @@ class BetterPlayerAsmsUtils {
     Map<String, String?>? headers,
   ]) async {
     try {
-      final request = await _httpClient.getUrl(Uri.parse(url));
-      if (headers != null) {
-        headers.forEach((name, value) => request.headers.add(name, value!));
-      }
-
-      final response = await request.close();
-      var data = "";
-      await response.transform(const Utf8Decoder()).listen((content) {
-        data += content.toString();
-      }).asFuture<String?>();
-
-      return data;
+      var response = await Dio()
+          .get(url, options: Options(headers: headers, receiveTimeout: 5000));
+      return response.data;
     } catch (exception) {
       BetterPlayerUtils.log("GetDataFromUrl failed: $exception");
       return null;
