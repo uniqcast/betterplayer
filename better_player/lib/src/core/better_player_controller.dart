@@ -476,6 +476,9 @@ class BetterPlayerController {
 
         break;
       case BetterPlayerDataSourceType.file:
+        if (kIsWeb) {
+          throw UnimplementedError();
+        }
         final file = File(betterPlayerDataSource.url);
         if (!file.existsSync()) {
           BetterPlayerUtils.log(
@@ -500,6 +503,9 @@ class BetterPlayerController {
             clearKey: _betterPlayerDataSource?.drmConfiguration?.clearKey);
         break;
       case BetterPlayerDataSourceType.memory:
+        if (kIsWeb) {
+          throw UnimplementedError();
+        }
         final file = await _createFile(_betterPlayerDataSource!.bytes!,
             extension: _betterPlayerDataSource!.videoExtension);
 

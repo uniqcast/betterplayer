@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:better_player/better_player.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import 'better_player_subtitle.dart';
 
@@ -11,6 +12,9 @@ class BetterPlayerSubtitlesFactory {
       BetterPlayerSubtitlesSource source) async {
     switch (source.type) {
       case BetterPlayerSubtitlesSourceType.file:
+        if (kIsWeb) {
+          throw UnimplementedError();
+        }
         return _parseSubtitlesFromFile(source);
       case BetterPlayerSubtitlesSourceType.network:
         return _parseSubtitlesFromNetwork(source);
