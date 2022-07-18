@@ -1,7 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
+
 import 'package:better_player/better_player.dart';
 import 'package:better_player/src/core/better_player_utils.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+
 import 'better_player_subtitle.dart';
 
 class BetterPlayerSubtitlesFactory {
@@ -9,6 +12,9 @@ class BetterPlayerSubtitlesFactory {
       BetterPlayerSubtitlesSource source) async {
     switch (source.type) {
       case BetterPlayerSubtitlesSourceType.file:
+        if (kIsWeb) {
+          throw UnimplementedError();
+        }
         return _parseSubtitlesFromFile(source);
       case BetterPlayerSubtitlesSourceType.network:
         return _parseSubtitlesFromNetwork(source);
@@ -43,24 +49,13 @@ class BetterPlayerSubtitlesFactory {
   static Future<List<BetterPlayerSubtitle>> _parseSubtitlesFromNetwork(
       BetterPlayerSubtitlesSource source) async {
     try {
-      final client = HttpClient();
       final List<BetterPlayerSubtitle> subtitles = [];
       for (final String? url in source.urls!) {
-        final request = await client.getUrl(Uri.parse(url!));
-        if (source.headers != null) {
-          for (var key in source.headers!.keys) {
-            final value = source.headers![key];
-            if (value != null) {
-              request.headers.add(key, value);
-            }
-          }
-        }
-        final response = await request.close();
-        final data = await response.transform(const Utf8Decoder()).join();
-        final cacheList = _parseString(data);
+        var response = await Dio().get(url!,
+            options: Options(headers: source.headers, receiveTimeout: 5000));
+        final cacheList = _parseString(response.data);
         subtitles.addAll(cacheList);
       }
-      client.close();
 
       BetterPlayerUtils.log("Parsed total subtitles: ${subtitles.length}");
       return subtitles;
