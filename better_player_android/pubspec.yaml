@@ -20,9 +20,13 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  #better_player_platform_interface: "1.0.0"
+  #  better_player_platform_interface:
+  #    path: ../better_player_platform_interface
   better_player_platform_interface:
-    path: ../better_player_platform_interface
+    git:
+      url: https://github.com/uniqcast/betterplayer
+      ref: 261deb8d1b6544618dded12e4f3a968c4f213891
+      path: better_player_platform_interface
 
 dev_dependencies:
   flutter_test:

@@ -4,9 +4,11 @@ packages:
   better_player_platform_interface:
     dependency: "direct main"
     description:
-      path: "../better_player_platform_interface"
-      relative: true
-    source: path
+      path: better_player_platform_interface
+      ref: b5a72f6dda56f842a71f1b7c7d7cd8092d8eb2c0
+      resolved-ref: b5a72f6dda56f842a71f1b7c7d7cd8092d8eb2c0
+      url: "https://github.com/uniqcast/betterplayer"
+    source: git
     version: "1.0.0"
   characters:
     dependency: transitive
