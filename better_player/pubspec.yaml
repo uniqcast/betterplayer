@@ -17,15 +17,39 @@ dependencies:
   meta: ^1.7.0
   dio: ^4.0.6
 
-  #video_player_platform_interface: ^1.0.0
+
+  #  better_player_platform_interface:
+  #    path: ../better_player_platform_interface
   better_player_platform_interface:
-    path: ../better_player_platform_interface
+    git:
+      url: https://github.com/uniqcast/betterplayer
+      ref: 261deb8d1b6544618dded12e4f3a968c4f213891
+      path: better_player_platform_interface
+
+  #  better_player_android:
+  #    path: ../better_player_android
   better_player_android:
-    path: ../better_player_android
+    git:
+      url: https://github.com/uniqcast/betterplayer
+      ref: 3f8052d629724ca406b81a5174d0cec1b794755e
+      path: better_player_android
+
+  #  better_player_ios:
+  #    path: ../better_player_ios
   better_player_ios:
-    path: ../better_player_ios
+    git:
+      url: https://github.com/uniqcast/betterplayer
+      ref: 3f8052d629724ca406b81a5174d0cec1b794755e
+      path: better_player_ios
+
+  #  better_player_web:
+  #    path: ../better_player_web
   better_player_web:
-    path: ../better_player_web
+    git:
+      url: https://github.com/uniqcast/betterplayer
+      ref: 3f8052d629724ca406b81a5174d0cec1b794755e
+      path: better_player_web
+
   visibility_detector: ^0.3.3
   path_provider: ^2.0.10
   collection: ^1.16.0
