@@ -90,8 +90,8 @@ NSString * DEFAULT_LICENSE_SERVER_URL = @"https://fps.ezdrm.com/api/licenses/";
             return ckc;
         } else {
             errorOut = error;
-            return nil;
             NSLog(@"Error: %@", error);
+            return nil;
         }
     }
     @catch (NSException* excp) {
