@@ -69,3 +69,5 @@ flutter:
         default_package: better_player_android
       ios:
         default_package: better_player_ios
+      web:
+        default_package: better_player_web
