@@ -70,6 +70,7 @@ class MockVideoPlayerController extends VideoPlayerController {
     Duration? overriddenDuration,
     String? licenseUrl,
     String? certificateUrl,
+    DrmType? drmType,
     Map<String, String>? drmHeaders,
     String? activityName,
     String? clearKey,

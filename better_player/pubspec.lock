@@ -11,38 +11,30 @@ packages:
   better_player_android:
     dependency: "direct main"
     description:
-      path: better_player_android
-      ref: "3f8052d629724ca406b81a5174d0cec1b794755e"
-      resolved-ref: "3f8052d629724ca406b81a5174d0cec1b794755e"
-      url: "https://github.com/uniqcast/betterplayer"
-    source: git
+      path: "../better_player_android"
+      relative: true
+    source: path
     version: "1.0.0"
   better_player_ios:
     dependency: "direct main"
     description:
-      path: better_player_ios
-      ref: "3f8052d629724ca406b81a5174d0cec1b794755e"
-      resolved-ref: "3f8052d629724ca406b81a5174d0cec1b794755e"
-      url: "https://github.com/uniqcast/betterplayer"
-    source: git
+      path: "../better_player_ios"
+      relative: true
+    source: path
     version: "1.0.0"
   better_player_platform_interface:
     dependency: "direct main"
     description:
-      path: better_player_platform_interface
-      ref: "261deb8d1b6544618dded12e4f3a968c4f213891"
-      resolved-ref: "261deb8d1b6544618dded12e4f3a968c4f213891"
-      url: "https://github.com/uniqcast/betterplayer"
-    source: git
+      path: "../better_player_platform_interface"
+      relative: true
+    source: path
     version: "1.0.0"
   better_player_web:
     dependency: "direct main"
     description:
-      path: better_player_web
-      ref: "3f8052d629724ca406b81a5174d0cec1b794755e"
-      resolved-ref: "3f8052d629724ca406b81a5174d0cec1b794755e"
-      url: "https://github.com/uniqcast/betterplayer"
-    source: git
+      path: "../better_player_web"
+      relative: true
+    source: path
     version: "1.0.0"
   boolean_selector:
     dependency: transitive
@@ -338,11 +330,9 @@ packages:
   video_js:
     dependency: transitive
     description:
-      path: "."
-      ref: "60d77f86506ac5ad4dab540c87812d9d77016363"
-      resolved-ref: "60d77f86506ac5ad4dab540c87812d9d77016363"
-      url: "https://github.com/uniqcast/video_js"
-    source: git
+      path: "../../video_js"
+      relative: true
+    source: path
     version: "0.1.3"
   visibility_detector:
     dependency: "direct main"
