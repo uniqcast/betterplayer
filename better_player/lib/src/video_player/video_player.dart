@@ -5,6 +5,7 @@
 // Dart imports:
 import 'dart:async';
 import 'dart:io';
+
 import 'package:better_player/src/configuration/better_player_buffering_configuration.dart';
 import 'package:better_player_platform_interface/better_player_platform_interface.dart';
 import 'package:flutter/material.dart';
@@ -338,6 +339,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     Duration? overriddenDuration,
     String? licenseUrl,
     String? certificateUrl,
+    DrmType? drmType,
     Map<String, String>? drmHeaders,
     String? activityName,
     String? clearKey,
@@ -361,6 +363,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
         overriddenDuration: overriddenDuration,
         licenseUrl: licenseUrl,
         certificateUrl: certificateUrl,
+        drmType: drmType,
         drmHeaders: drmHeaders,
         activityName: activityName,
         clearKey: clearKey,

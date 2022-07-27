@@ -467,6 +467,7 @@ class BetterPlayerController {
           licenseUrl: _betterPlayerDataSource?.drmConfiguration?.licenseUrl,
           certificateUrl:
               _betterPlayerDataSource?.drmConfiguration?.certificateUrl,
+          drmType: _betterPlayerDataSource?.drmConfiguration?.drmType,
           drmHeaders: _betterPlayerDataSource?.drmConfiguration?.headers,
           activityName:
               _betterPlayerDataSource?.notificationConfiguration?.activityName,
@@ -1234,8 +1235,7 @@ class BetterPlayerController {
   ///DRM headers if available.
   Map<String, String?> _getHeaders() {
     final headers = betterPlayerDataSource!.headers ?? {};
-    if (betterPlayerDataSource?.drmConfiguration?.drmType ==
-            BetterPlayerDrmType.token &&
+    if (betterPlayerDataSource?.drmConfiguration?.drmType == DrmType.token &&
         betterPlayerDataSource?.drmConfiguration?.token != null) {
       headers[_authorizationHeader] =
           betterPlayerDataSource!.drmConfiguration!.token!;

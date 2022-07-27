@@ -1,5 +1,8 @@
 library better_player;
 
+export 'package:better_player_platform_interface/better_player_platform_interface.dart'
+    show DrmType;
+
 export 'src/asms/better_player_asms_audio_track.dart';
 export 'src/asms/better_player_asms_data_holder.dart';
 export 'src/asms/better_player_asms_subtitle.dart';
@@ -14,7 +17,6 @@ export 'src/configuration/better_player_controls_configuration.dart';
 export 'src/configuration/better_player_data_source.dart';
 export 'src/configuration/better_player_data_source_type.dart';
 export 'src/configuration/better_player_drm_configuration.dart';
-export 'src/configuration/better_player_drm_type.dart';
 export 'src/configuration/better_player_event.dart';
 export 'src/configuration/better_player_event_type.dart';
 export 'src/configuration/better_player_notification_configuration.dart';

@@ -1,9 +1,9 @@
-import 'package:better_player/src/configuration/better_player_drm_type.dart';
+import 'package:better_player_platform_interface/better_player_platform_interface.dart';
 
 ///Configuration of DRM used to protect data source
 class BetterPlayerDrmConfiguration {
   ///Type of DRM
-  final BetterPlayerDrmType? drmType;
+  final DrmType? drmType;
 
   ///Parameter used only for token encrypted DRMs
   final String? token;
