@@ -19,8 +19,7 @@ import 'method_channel_better_player.dart';
 /// (using `extends`) ensures that the subclass will get the default implementation, while
 /// platform implementations that `implements` this interface will be broken by newly added
 /// [BetterPlayerPlatform] methods.
-abstract class BetterPlayerPlatform extends PlatformInterface{
-
+abstract class BetterPlayerPlatform extends PlatformInterface {
   /// Constructs a VideoPlayerPlatform.
   BetterPlayerPlatform() : super(token: _token);
 
@@ -55,8 +54,7 @@ abstract class BetterPlayerPlatform extends PlatformInterface{
   }
 
   /// Creates an instance of a video player and returns its textureId.
-  Future<int?> create(
-      {BufferingConfiguration? bufferingConfiguration}) {
+  Future<int?> create({BufferingConfiguration? bufferingConfiguration}) {
     throw UnimplementedError('create() has not been implemented.');
   }
 
@@ -170,6 +168,13 @@ abstract class BetterPlayerPlatform extends PlatformInterface{
   void _verifyProvidesDefaultImplementations() {}
 }
 
+///Types of available DRM's
+///token -> supported for iOS/Android
+///widevine -> supported only for Android/web
+///fairplay -> suppoted only for iOS/web
+///clearKey -> supported only for Android/web
+enum DrmType { token, widevine, fairplay, clearKey }
+
 /// Description of the data source used to create an instance of
 /// the video player.
 class DataSource {
@@ -212,6 +217,7 @@ class DataSource {
     this.overriddenDuration,
     this.licenseUrl,
     this.certificateUrl,
+    this.drmType,
     this.drmHeaders,
     this.activityName,
     this.clearKey,
@@ -285,6 +291,8 @@ class DataSource {
   final String? licenseUrl;
 
   final String? certificateUrl;
+
+  final DrmType? drmType;
 
   final Map<String, String>? drmHeaders;
 
