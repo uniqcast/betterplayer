@@ -5,8 +5,8 @@ packages:
     dependency: "direct main"
     description:
       path: better_player_platform_interface
-      ref: "261deb8d1b6544618dded12e4f3a968c4f213891"
-      resolved-ref: "261deb8d1b6544618dded12e4f3a968c4f213891"
+      ref: afc24df1c8452aa71c01828c99da8dd355167872
+      resolved-ref: afc24df1c8452aa71c01828c99da8dd355167872
       url: "https://github.com/uniqcast/betterplayer"
     source: git
     version: "1.0.0"
@@ -29,6 +29,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_lints:
+    dependency: "direct dev"
+    description:
+      name: flutter_lints
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   flutter_web_plugins:
     dependency: "direct main"
     description: flutter
@@ -41,6 +48,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.4"
+  lints:
+    dependency: transitive
+    description:
+      name: lints
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   material_color_utilities:
     dependency: transitive
     description:
@@ -78,8 +92,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "60d77f86506ac5ad4dab540c87812d9d77016363"
-      resolved-ref: "60d77f86506ac5ad4dab540c87812d9d77016363"
+      ref: "0baa5763f6121a925ac0c30cf46ff5d0b5815ec8"
+      resolved-ref: "0baa5763f6121a925ac0c30cf46ff5d0b5815ec8"
       url: "https://github.com/uniqcast/video_js"
     source: git
     version: "0.1.3"

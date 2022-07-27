@@ -25,7 +25,7 @@ dependencies:
   better_player_platform_interface:
     git:
       url: https://github.com/uniqcast/betterplayer
-      ref: 261deb8d1b6544618dded12e4f3a968c4f213891
+      ref: afc24df1c8452aa71c01828c99da8dd355167872
       path: better_player_platform_interface
 
 dev_dependencies:

@@ -128,9 +128,32 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> setDataSource(int? textureId, DataSource dataSource) async {
+    Map<String, dynamic>? keySystems;
+    switch (dataSource.drmType) {
+      case DrmType.widevine:
+        keySystems = {'com.widevine.alpha': dataSource.licenseUrl};
+        break;
+      case DrmType.fairplay:
+        keySystems = {
+          'com.apple.fps.1_0': {
+            'certificateUri': dataSource.certificateUrl,
+            'licenseUri': dataSource.licenseUrl
+          }
+        };
+        break;
+      case DrmType.clearKey:
+        keySystems = {'org.w3.clearkey': dataSource.licenseUrl};
+        break;
+      case DrmType.token:
+      case null:
+        // don't need to do anything
+        break;
+    }
     controller.setSRC(
       dataSource.uri ?? '',
       type: dataSource.videoExtension ?? 'application/x-mpegURL',
+      keySystems: keySystems,
+      emeHeaders: dataSource.drmHeaders,
     );
     await Future.delayed(Duration(seconds: 2));
     VideoJsResults()
