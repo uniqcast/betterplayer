@@ -155,7 +155,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       keySystems: keySystems,
       emeHeaders: dataSource.drmHeaders,
     );
-    await Future.delayed(Duration(seconds: 2));
     VideoJsResults()
         .onVolumeFromJsStream
         .add(ResultFromVideoJs(playerId, 'onReady', 'true'));
@@ -169,7 +168,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> play(int? textureId) async {
-    await Future.delayed(Duration(seconds: 1));
     controller.play();
   }
 
