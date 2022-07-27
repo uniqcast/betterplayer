@@ -1,0 +1,15 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_single_quotes: true
+    prefer_final_locals: true
+    require_trailing_commas: true
+    prefer_final_in_for_each: true
+    prefer_final_fields: true
+
+analyzer:
+  exclude:
+    - "lib/gen/*"
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
