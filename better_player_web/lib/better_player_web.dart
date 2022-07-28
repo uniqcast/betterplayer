@@ -169,11 +169,13 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   @override
   Future<void> play(int? textureId) async {
     controller.play();
+    controller.onEnd((p0) {
+      controller.pause();
+    });
   }
 
   @override
   Future<void> pause(int? textureId) async {
-    await Future.delayed(Duration(seconds: 1));
     controller.pause();
   }
 
@@ -260,11 +262,11 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
             size: size,
           );
         // TODO:
-        // case 'completed':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.completed,
-        //     key: key,
-        //   );
+        case 'onEnd':
+          return VideoEvent(
+            eventType: VideoEventType.completed,
+            key: key,
+          );
         // case 'bufferingUpdate':
         //   final List<dynamic> values = map['values'] as List;
         //
@@ -284,11 +286,12 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
         //     key: key,
         //   );
         //
-        // case 'play':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.play,
-        //     key: key,
-        //   );
+        case 'isPaused':
+          final playing = !(event.result as bool);
+          return VideoEvent(
+            eventType: playing ? VideoEventType.play : VideoEventType.pause,
+            key: key,
+          );
         //
         // case 'pause':
         //   return VideoEvent(
