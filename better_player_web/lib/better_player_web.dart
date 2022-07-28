@@ -169,9 +169,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   @override
   Future<void> play(int? textureId) async {
     controller.play();
-    controller.onEnd((p0) {
-      controller.pause();
-    });
+    controller.onEnd((p0) => null);
   }
 
   @override
