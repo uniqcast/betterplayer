@@ -69,7 +69,7 @@ bool _isLoaded(html.Element head, String url) {
   if (url.startsWith('./')) {
     url = url.replaceFirst('./', '');
   }
-  for (var element in head.children) {
+  for (final element in head.children) {
     if (element is html.ScriptElement) {
       if (element.src.endsWith(url)) {
         return true;
@@ -169,7 +169,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   @override
   Future<void> play(int? textureId) async {
     controller.play();
-    controller.onEnd((p0) => null);
   }
 
   @override
@@ -252,11 +251,11 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       final key = event.videoId;
       switch (event.type) {
         case 'onReady':
-          final Size size = Size(800, 600);
+          const Size size = Size(800, 600);
           return VideoEvent(
             eventType: VideoEventType.initialized,
             key: key,
-            duration: Duration(milliseconds: 1000),
+            duration: const Duration(milliseconds: 1000),
             size: size,
           );
         // TODO:
