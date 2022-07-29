@@ -69,7 +69,7 @@ bool _isLoaded(html.Element head, String url) {
   if (url.startsWith('./')) {
     url = url.replaceFirst('./', '');
   }
-  for (var element in head.children) {
+  for (final element in head.children) {
     if (element is html.ScriptElement) {
       if (element.src.endsWith(url)) {
         return true;
@@ -173,7 +173,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> pause(int? textureId) async {
-    await Future.delayed(Duration(seconds: 1));
     controller.pause();
   }
 
@@ -252,19 +251,19 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       final key = event.videoId;
       switch (event.type) {
         case 'onReady':
-          final Size size = Size(800, 600);
+          const Size size = Size(800, 600);
           return VideoEvent(
             eventType: VideoEventType.initialized,
             key: key,
-            duration: Duration(milliseconds: 1000),
+            duration: const Duration(milliseconds: 1000),
             size: size,
           );
         // TODO:
-        // case 'completed':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.completed,
-        //     key: key,
-        //   );
+        case 'onEnd':
+          return VideoEvent(
+            eventType: VideoEventType.completed,
+            key: key,
+          );
         // case 'bufferingUpdate':
         //   final List<dynamic> values = map['values'] as List;
         //
@@ -284,11 +283,12 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
         //     key: key,
         //   );
         //
-        // case 'play':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.play,
-        //     key: key,
-        //   );
+        case 'isPaused':
+          final playing = !(event.result as bool);
+          return VideoEvent(
+            eventType: playing ? VideoEventType.play : VideoEventType.pause,
+            key: key,
+          );
         //
         // case 'pause':
         //   return VideoEvent(
