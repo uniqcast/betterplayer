@@ -188,7 +188,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       final key = event.videoId;
       switch (event.type) {
         case 'onReady':
-          print('_PLAYER_EVENT onReady, value: ${event.result}');
           const Size size = Size(800, 600);
           final time = double.tryParse(event.result) ?? 0;
           final seconds = time.truncate();
