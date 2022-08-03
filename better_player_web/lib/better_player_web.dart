@@ -189,13 +189,15 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       switch (event.type) {
         case 'onReady':
           const Size size = Size(800, 600);
+          final time = double.tryParse(event.result) ?? 0;
+          final seconds = time.truncate();
+          final miliseconds = ((time - seconds) * 1000).truncate();
           return VideoEvent(
             eventType: VideoEventType.initialized,
             key: key,
-            duration: const Duration(milliseconds: 1000),
             size: size,
+            duration: Duration(seconds: seconds, milliseconds: miliseconds),
           );
-        // TODO:
         case 'onEnd':
           return VideoEvent(
             eventType: VideoEventType.completed,
