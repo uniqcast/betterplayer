@@ -162,7 +162,9 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   Future<void> disablePictureInPicture(int? textureId) async {}
 
   @override
-  Future<void> setAudioTrack(int? textureId, String? name, int? index) async {}
+  Future<void> setAudioTrack(int? textureId, String? name, int? index) async {
+    controller.setAudioTrack(index.toString());
+  }
 
   @override
   Future<void> setMixWithOthers(int? textureId, bool mixWithOthers) async {}
