@@ -11,7 +11,6 @@ const playerId = 'uniqtv_player';
 class BetterPlayerWeb extends BetterPlayerPlatform {
   /// Registers this class as the default instance of [BetterPlayerPlatform].
   static void registerWith(Registrar registrar) {
-    VideoJsResults().init();
     BetterPlayerPlatform.instance = BetterPlayerWeb();
   }
 
@@ -49,6 +48,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       ),
     );
     videoJsWidget = VideoJsWidget(videoJsController: controller);
+    await controller.init();
   }
 
   @override
@@ -86,7 +86,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
         // don't need to do anything
         break;
     }
-    controller.setSRC(
+    await controller.setSRC(
       dataSource.uri ?? '',
       type: dataSource.videoExtension ?? 'application/x-mpegURL',
       keySystems: keySystems,
@@ -105,17 +105,17 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> play(int? textureId) async {
-    controller.play();
+    return controller.play();
   }
 
   @override
   Future<void> pause(int? textureId) async {
-    controller.pause();
+    return controller.pause();
   }
 
   @override
   Future<void> setVolume(int? textureId, double volume) async {
-    controller.setVolume(volume.toString());
+    controller.setVolume(volume);
   }
 
   @override
@@ -132,16 +132,10 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<Duration> getPosition(int? textureId) async {
-    final completer = Completer<Duration>();
-    controller.currentTime((timeValue) {
-      final time = double.tryParse(timeValue) ?? 0;
-      final seconds = time.truncate();
-      final miliseconds = ((time - seconds) * 1000).truncate();
-      return completer
-          .complete(Duration(seconds: seconds, milliseconds: miliseconds));
-    });
-
-    return completer.future;
+    final time = await controller.currentTime();
+    final seconds = time.truncate();
+    final miliseconds = ((time - seconds) * 1000).truncate();
+    return Duration(seconds: seconds, milliseconds: miliseconds);
   }
 
   @override
