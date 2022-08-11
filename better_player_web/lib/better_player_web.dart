@@ -127,7 +127,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> seekTo(int? textureId, Duration? position) async {
-    controller.setCurrentTime(position?.inSeconds.toString() ?? '');
+    controller.setCurrentTime(position?.inSeconds ?? 0);
   }
 
   @override
@@ -183,16 +183,18 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       }
       final key = event.videoId;
       switch (event.type) {
-        case 'onReady':
+        case 'initialized':
           const Size size = Size(800, 600);
           final time = double.tryParse(event.result) ?? 0;
           final seconds = time.truncate();
           final miliseconds = ((time - seconds) * 1000).truncate();
+          final duration =
+              Duration(seconds: seconds, milliseconds: miliseconds);
           return VideoEvent(
             eventType: VideoEventType.initialized,
             key: key,
             size: size,
-            duration: Duration(seconds: seconds, milliseconds: miliseconds),
+            duration: duration,
           );
         case 'onEnd':
           return VideoEvent(
