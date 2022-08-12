@@ -11,12 +11,10 @@ const playerId = 'uniqtv_player';
 class BetterPlayerWeb extends BetterPlayerPlatform {
   /// Registers this class as the default instance of [BetterPlayerPlatform].
   static void registerWith(Registrar registrar) {
-    VideoJsResults().init();
     BetterPlayerPlatform.instance = BetterPlayerWeb();
   }
 
   late VideoJsController controller;
-  late VideoJsWidget videoJsWidget;
 
   @override
   Future<void> init() async {
@@ -48,7 +46,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
         suppressNotSupportedError: false,
       ),
     );
-    videoJsWidget = VideoJsWidget(videoJsController: controller);
+    await controller.init();
   }
 
   @override
@@ -86,7 +84,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
         // don't need to do anything
         break;
     }
-    controller.setSRC(
+    await controller.setSRC(
       dataSource.uri ?? '',
       type: dataSource.videoExtension ?? 'application/x-mpegURL',
       keySystems: keySystems,
@@ -105,17 +103,17 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> play(int? textureId) async {
-    controller.play();
+    return controller.play();
   }
 
   @override
   Future<void> pause(int? textureId) async {
-    controller.pause();
+    return controller.pause();
   }
 
   @override
   Future<void> setVolume(int? textureId, double volume) async {
-    controller.setVolume(volume.toString());
+    controller.setVolume(volume);
   }
 
   @override
@@ -127,21 +125,15 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> seekTo(int? textureId, Duration? position) async {
-    controller.setCurrentTime(position?.inSeconds.toString() ?? '');
+    controller.setCurrentTime(position?.inSeconds ?? 0);
   }
 
   @override
   Future<Duration> getPosition(int? textureId) async {
-    final completer = Completer<Duration>();
-    controller.currentTime((timeValue) {
-      final time = double.tryParse(timeValue) ?? 0;
-      final seconds = time.truncate();
-      final miliseconds = ((time - seconds) * 1000).truncate();
-      return completer
-          .complete(Duration(seconds: seconds, milliseconds: miliseconds));
-    });
-
-    return completer.future;
+    final time = await controller.currentTime();
+    final seconds = time.truncate();
+    final miliseconds = ((time - seconds) * 1000).truncate();
+    return Duration(seconds: seconds, milliseconds: miliseconds);
   }
 
   @override
@@ -189,16 +181,18 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       }
       final key = event.videoId;
       switch (event.type) {
-        case 'onReady':
+        case 'initialized':
           const Size size = Size(800, 600);
           final time = double.tryParse(event.result) ?? 0;
           final seconds = time.truncate();
           final miliseconds = ((time - seconds) * 1000).truncate();
+          final duration =
+              Duration(seconds: seconds, milliseconds: miliseconds);
           return VideoEvent(
             eventType: VideoEventType.initialized,
             key: key,
             size: size,
-            duration: Duration(seconds: seconds, milliseconds: miliseconds),
+            duration: duration,
           );
         case 'onEnd':
           return VideoEvent(
@@ -267,6 +261,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Widget buildView(int? textureId) {
-    return videoJsWidget;
+    return VideoJsWidget(videoJsController: controller);
   }
 }
