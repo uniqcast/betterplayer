@@ -15,7 +15,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   }
 
   late VideoJsController controller;
-  late VideoJsWidget videoJsWidget;
 
   @override
   Future<void> init() async {
@@ -47,7 +46,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
         suppressNotSupportedError: false,
       ),
     );
-    videoJsWidget = VideoJsWidget(videoJsController: controller);
     await controller.init();
   }
 
@@ -263,6 +261,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Widget buildView(int? textureId) {
-    return videoJsWidget;
+    return VideoJsWidget(videoJsController: controller);
   }
 }

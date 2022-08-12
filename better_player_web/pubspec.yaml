@@ -19,7 +19,7 @@ dependencies:
   video_js:
     git:
       url: https://github.com/uniqcast/video_js
-      ref: a5d4335fd4ed24e1ea7a18a0a1f316e76e40015e
+      ref: c029afeb4104917808ec1671ada3f32c0c37f597
 #  video_js:
 #    path: '../../video_js'
 
