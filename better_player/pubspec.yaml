@@ -46,7 +46,7 @@ dependencies:
   better_player_web:
     git:
       url: https://github.com/uniqcast/betterplayer
-      ref: 4896788303be765114800a2fcf067d8c47529a73
+      ref: 8f5531e15ef59deec2513920d16758f00cc13cb2
       path: better_player_web
 
   visibility_detector: ^0.3.3
