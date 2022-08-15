@@ -212,7 +212,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _creatingCompleter.complete(null);
 
     unawaited(_applyLooping());
-    unawaited(_applyVolume());
 
     void eventListener(VideoEvent event) {
       if (_isDisposed) {
@@ -281,6 +280,8 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     _eventSubscription = _videoPlayerPlatform
         .videoEventsFor(_textureId)
         .listen(eventListener, onError: errorListener);
+
+    value = VideoPlayerValue.uninitialized();
   }
 
   /// Set data source for playing a video from an asset.
@@ -655,16 +656,16 @@ class VideoPlayer extends StatefulWidget {
 
   /// The [VideoPlayerController] responsible for the video being rendered in
   /// this widget.
-  final VideoPlayerController? controller;
+  final VideoPlayerController controller;
 
   @override
-  _VideoPlayerState createState() => _VideoPlayerState();
+  VideoPlayerState createState() => VideoPlayerState();
 }
 
-class _VideoPlayerState extends State<VideoPlayer> {
-  _VideoPlayerState() {
+class VideoPlayerState extends State<VideoPlayer> {
+  VideoPlayerState() {
     _listener = () {
-      final int? newTextureId = widget.controller!.textureId;
+      final int? newTextureId = widget.controller.textureId;
       if (newTextureId != _textureId) {
         setState(() {
           _textureId = newTextureId;
@@ -679,24 +680,24 @@ class _VideoPlayerState extends State<VideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _textureId = widget.controller!.textureId;
+    _textureId = widget.controller.textureId;
     // Need to listen for initialization events since the actual texture ID
     // becomes available after asynchronous initialization finishes.
-    widget.controller!.addListener(_listener);
+    widget.controller.addListener(_listener);
   }
 
   @override
   void didUpdateWidget(VideoPlayer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    oldWidget.controller!.removeListener(_listener);
-    _textureId = widget.controller!.textureId;
-    widget.controller!.addListener(_listener);
+    oldWidget.controller.removeListener(_listener);
+    _textureId = widget.controller.textureId;
+    widget.controller.addListener(_listener);
   }
 
   @override
   void deactivate() {
     super.deactivate();
-    widget.controller!.removeListener(_listener);
+    widget.controller.removeListener(_listener);
   }
 
   @override
@@ -856,11 +857,11 @@ class VideoProgressIndicator extends StatefulWidget {
   final EdgeInsets padding;
 
   @override
-  _VideoProgressIndicatorState createState() => _VideoProgressIndicatorState();
+  VideoProgressIndicatorState createState() => VideoProgressIndicatorState();
 }
 
-class _VideoProgressIndicatorState extends State<VideoProgressIndicator> {
-  _VideoProgressIndicatorState() {
+class VideoProgressIndicatorState extends State<VideoProgressIndicator> {
+  VideoProgressIndicatorState() {
     listener = () {
       if (!mounted) {
         return;

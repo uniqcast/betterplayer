@@ -40,12 +40,12 @@ class BetterPlayer extends StatefulWidget {
   final BetterPlayerController controller;
 
   @override
-  _BetterPlayerState createState() {
-    return _BetterPlayerState();
+  BetterPlayerState createState() {
+    return BetterPlayerState();
   }
 }
 
-class _BetterPlayerState extends State<BetterPlayer>
+class BetterPlayerState extends State<BetterPlayer>
     with WidgetsBindingObserver {
   BetterPlayerConfiguration get _betterPlayerConfiguration =>
       widget.controller.betterPlayerConfiguration;
@@ -223,7 +223,7 @@ class _BetterPlayerState extends State<BetterPlayer>
     if (_betterPlayerConfiguration.autoDetectFullscreenDeviceOrientation ==
         true) {
       final aspectRatio =
-          widget.controller.videoPlayerController?.value.aspectRatio ?? 1.0;
+          widget.controller.videoPlayerController.value.aspectRatio;
       List<DeviceOrientation> deviceOrientations;
       if (aspectRatio < 1.0) {
         deviceOrientations = [

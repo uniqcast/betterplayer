@@ -18,20 +18,19 @@ dependencies:
   dio: ^4.0.6
 
 
-#  better_player_platform_interface:
-#    path: ../better_player_platform_interface
+  #  better_player_platform_interface:
+  #    path: ../better_player_platform_interface
   better_player_platform_interface:
     git:
       url: https://github.com/uniqcast/betterplayer
       ref: afc24df1c8452aa71c01828c99da8dd355167872
       path: better_player_platform_interface
 
-#  better_player_ios:
-#    path: ../better_player_ios
-#  better_player_web:
-#    path: ../better_player_web
-#  better_player_android:
-#    path: ../better_player_android
+  #  better_player_ios:
+  #    path: ../better_player_ios
+
+  #  better_player_android:
+  #    path: ../better_player_android
 
   better_player_android:
     git:
@@ -46,8 +45,10 @@ dependencies:
   better_player_web:
     git:
       url: https://github.com/uniqcast/betterplayer
-      ref: 8f5531e15ef59deec2513920d16758f00cc13cb2
+      ref: a48744ef0961fdab4ceae8752c36a17ccfd30c6a
       path: better_player_web
+  #  better_player_web:
+  #    path: ../better_player_web
 
   visibility_detector: ^0.3.3
   path_provider: ^2.0.10

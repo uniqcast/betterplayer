@@ -10,21 +10,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BetterPlayerWithControls extends StatefulWidget {
-  final BetterPlayerController? controller;
+  final BetterPlayerController controller;
 
-  const BetterPlayerWithControls({Key? key, this.controller}) : super(key: key);
+  const BetterPlayerWithControls({Key? key, required this.controller})
+      : super(key: key);
 
   @override
-  _BetterPlayerWithControlsState createState() =>
-      _BetterPlayerWithControlsState();
+  BetterPlayerWithControlsState createState() =>
+      BetterPlayerWithControlsState();
 }
 
-class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
+class BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
   BetterPlayerSubtitlesConfiguration get subtitlesConfiguration =>
-      widget.controller!.betterPlayerConfiguration.subtitlesConfiguration;
+      widget.controller.betterPlayerConfiguration.subtitlesConfiguration;
 
   BetterPlayerControlsConfiguration get controlsConfiguration =>
-      widget.controller!.betterPlayerControlsConfiguration;
+      widget.controller.betterPlayerControlsConfiguration;
 
   final StreamController<bool> playerVisibilityStreamController =
       StreamController();
@@ -37,7 +38,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
   void initState() {
     playerVisibilityStreamController.add(true);
     _controllerEventSubscription =
-        widget.controller!.controllerEventStream.listen(_onControllerChanged);
+        widget.controller.controllerEventStream.listen(_onControllerChanged);
     super.initState();
   }
 
@@ -46,7 +47,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
     if (oldWidget.controller != widget.controller) {
       _controllerEventSubscription?.cancel();
       _controllerEventSubscription =
-          widget.controller!.controllerEventStream.listen(_onControllerChanged);
+          widget.controller.controllerEventStream.listen(_onControllerChanged);
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -78,8 +79,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
           betterPlayerController
               .betterPlayerConfiguration.autoDetectFullscreenAspectRatio) {
         aspectRatio =
-            betterPlayerController.videoPlayerController?.value.aspectRatio ??
-                1.0;
+            betterPlayerController.videoPlayerController.value.aspectRatio;
       } else {
         aspectRatio = betterPlayerController
                 .betterPlayerConfiguration.fullScreenAspectRatio ??
@@ -107,7 +107,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
     }
   }
 
-  Container _buildPlayerWithControls(
+  Widget _buildPlayerWithControls(
       BetterPlayerController betterPlayerController, BuildContext context) {
     final configuration = betterPlayerController.betterPlayerConfiguration;
     var rotation = configuration.rotation;
@@ -117,7 +117,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
       rotation = 0;
     }
     if (betterPlayerController.betterPlayerDataSource == null) {
-      return Container();
+      return VideoPlayer(betterPlayerController.videoPlayerController);
     }
     _initialized = true;
 
@@ -127,7 +127,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
     return Container(
       child: Stack(
         fit: StackFit.passthrough,
-        children: <Widget>[
+        children: [
           if (placeholderOnTop) _buildPlaceholder(betterPlayerController),
           Transform.rotate(
             angle: rotation * pi / 180,
@@ -152,7 +152,7 @@ class _BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
   }
 
   Widget _buildPlaceholder(BetterPlayerController betterPlayerController) {
-    return betterPlayerController.betterPlayerDataSource!.placeholder ??
+    return betterPlayerController.betterPlayerDataSource?.placeholder ??
         betterPlayerController.betterPlayerConfiguration.placeholder ??
         Container();
   }
@@ -197,7 +197,7 @@ class _BetterPlayerVideoFitWidget extends StatefulWidget {
 
 class _BetterPlayerVideoFitWidgetState
     extends State<_BetterPlayerVideoFitWidget> {
-  VideoPlayerController? get controller =>
+  VideoPlayerController get controller =>
       widget.betterPlayerController.videoPlayerController;
 
   bool _initialized = false;
@@ -226,7 +226,7 @@ class _BetterPlayerVideoFitWidgetState
     super.didUpdateWidget(oldWidget);
     if (oldWidget.betterPlayerController.videoPlayerController != controller) {
       if (_initializedListener != null) {
-        oldWidget.betterPlayerController.videoPlayerController!
+        oldWidget.betterPlayerController.videoPlayerController
             .removeListener(_initializedListener!);
       }
       _initialized = false;
@@ -235,18 +235,18 @@ class _BetterPlayerVideoFitWidgetState
   }
 
   void _initialize() {
-    if (controller?.value.initialized == false) {
+    if (controller.value.initialized == false) {
       _initializedListener = () {
         if (!mounted) {
           return;
         }
 
-        if (_initialized != controller!.value.initialized) {
-          _initialized = controller!.value.initialized;
+        if (_initialized != controller.value.initialized) {
+          _initialized = controller.value.initialized;
           setState(() {});
         }
       };
-      controller!.addListener(_initializedListener!);
+      controller.addListener(_initializedListener!);
     } else {
       _initialized = true;
     }
@@ -281,8 +281,8 @@ class _BetterPlayerVideoFitWidgetState
             child: FittedBox(
               fit: widget.boxFit,
               child: SizedBox(
-                width: controller!.value.size?.width ?? 0,
-                height: controller!.value.size?.height ?? 0,
+                width: controller.value.size?.width ?? 0,
+                height: controller.value.size?.height ?? 0,
                 child: VideoPlayer(controller),
               ),
             ),
@@ -297,8 +297,7 @@ class _BetterPlayerVideoFitWidgetState
   @override
   void dispose() {
     if (_initializedListener != null) {
-      widget.betterPlayerController.videoPlayerController!
-          .removeListener(_initializedListener!);
+      widget.betterPlayerController.videoPlayerController.removeListener(_initializedListener!);
     }
     _controllerEventSubscription?.cancel();
     super.dispose();
