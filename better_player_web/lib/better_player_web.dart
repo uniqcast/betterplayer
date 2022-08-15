@@ -46,7 +46,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
         suppressNotSupportedError: false,
       ),
     );
-    await controller.init();
   }
 
   @override
@@ -58,7 +57,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   Future<int?> create({
     BufferingConfiguration? bufferingConfiguration,
   }) async {
-    return 123;
+    return 1;
   }
 
   @override
