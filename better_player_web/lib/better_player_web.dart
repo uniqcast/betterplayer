@@ -130,9 +130,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   @override
   Future<Duration> getPosition(int? textureId) async {
     final time = await controller.currentTime();
-    final seconds = time.truncate();
-    final miliseconds = ((time - seconds) * 1000).truncate();
-    return Duration(seconds: seconds, milliseconds: miliseconds);
+    return getTimeDurationFromSeconds(time);
   }
 
   @override
@@ -183,15 +181,12 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
         case 'initialized':
           const Size size = Size(800, 600);
           final time = double.tryParse(event.result) ?? 0;
-          final seconds = time.truncate();
-          final miliseconds = ((time - seconds) * 1000).truncate();
-          final duration =
-              Duration(seconds: seconds, milliseconds: miliseconds);
+
           return VideoEvent(
             eventType: VideoEventType.initialized,
             key: key,
             size: size,
-            duration: duration,
+            duration: getTimeDurationFromSeconds(time),
           );
         case 'onEnd':
           return VideoEvent(
@@ -224,18 +219,27 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
             key: key,
           );
         //
-        // case 'pause':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.pause,
-        //     key: key,
-        //   );
+        case 'pause':
+          print('_PLAYER_EVENT: pause');
+          return VideoEvent(
+            eventType: VideoEventType.pause,
+            key: key,
+          );
+        case 'play':
+          print('_PLAYER_EVENT: play');
+          return VideoEvent(
+            eventType: VideoEventType.play,
+            key: key,
+          );
         //
-        // case 'seek':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.seek,
-        //     key: key,
-        //     position: Duration(milliseconds: map['position'] as int),
-        //   );
+        case 'seek':
+          final time = double.tryParse(event.result) ?? 0;
+          print('_PLAYER_EVENT: seek, time:$time');
+          return VideoEvent(
+            eventType: VideoEventType.seek,
+            key: key,
+            position: getTimeDurationFromSeconds(time),
+          );
         //
         // case 'pipStart':
         //   return VideoEvent(
@@ -261,5 +265,11 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   @override
   Widget buildView(int? textureId) {
     return VideoJsWidget(videoJsController: controller);
+  }
+
+  Duration getTimeDurationFromSeconds(num time) {
+    final seconds = time.truncate();
+    final miliseconds = ((time - seconds) * 1000).truncate();
+    return Duration(seconds: seconds, milliseconds: miliseconds);
   }
 }
