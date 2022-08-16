@@ -112,7 +112,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> setVolume(int? textureId, double volume) async {
-    controller.setVolume(volume);
+    return controller.setVolume(volume);
   }
 
   @override
@@ -120,11 +120,15 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> setTrackParameters(
-      int? textureId, int? width, int? height, int? bitrate) async {}
+    int? textureId,
+    int? width,
+    int? height,
+    int? bitrate,
+  ) async {}
 
   @override
   Future<void> seekTo(int? textureId, Duration? position) async {
-    controller.setCurrentTime(position?.inSeconds ?? 0);
+    return controller.setCurrentTime(position?.inSeconds ?? 0);
   }
 
   @override
@@ -141,8 +145,13 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   }
 
   @override
-  Future<void> enablePictureInPicture(int? textureId, double? top, double? left,
-      double? width, double? height) async {}
+  Future<void> enablePictureInPicture(
+    int? textureId,
+    double? top,
+    double? left,
+    double? width,
+    double? height,
+  ) async {}
 
   @override
   Future<bool?> isPictureInPictureEnabled(int? textureId) async {
@@ -154,7 +163,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> setAudioTrack(int? textureId, String? name, int? index) async {
-    controller.setAudioTrack(index.toString());
+    return controller.setAudioTrack(index.toString());
   }
 
   @override
