@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:better_player_platform_interface/better_player_platform_interface.dart';
+import 'package:better_player_web/utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:video_js/video_js.dart';
@@ -192,17 +193,11 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       final key = event.videoId;
       switch (event.type) {
         case 'initialized':
-          const Size size = Size(800, 600);
-          final time = double.tryParse(event.result) ?? 0;
-          final seconds = time.truncate();
-          final miliseconds = ((time - seconds) * 1000).truncate();
-          final duration =
-              Duration(seconds: seconds, milliseconds: miliseconds);
           return VideoEvent(
             eventType: VideoEventType.initialized,
             key: key,
-            size: size,
-            duration: duration,
+            size: const Size(800, 600), //TODO: actual stream size
+            duration: parseDuration(event.result),
           );
         case 'onEnd':
           return VideoEvent(
