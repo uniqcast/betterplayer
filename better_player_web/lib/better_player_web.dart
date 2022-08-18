@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:better_player_platform_interface/better_player_platform_interface.dart';
+import 'package:better_player_web/utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:video_js/video_js.dart';
@@ -112,7 +113,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> setVolume(int? textureId, double volume) async {
-    controller.setVolume(volume);
+    return controller.setVolume(volume);
   }
 
   @override
@@ -120,11 +121,15 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> setTrackParameters(
-      int? textureId, int? width, int? height, int? bitrate) async {}
+    int? textureId,
+    int? width,
+    int? height,
+    int? bitrate,
+  ) async {}
 
   @override
   Future<void> seekTo(int? textureId, Duration? position) async {
-    controller.setCurrentTime(position?.inSeconds ?? 0);
+    return controller.setCurrentTime(position?.inSeconds ?? 0);
   }
 
   @override
@@ -139,8 +144,13 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   }
 
   @override
-  Future<void> enablePictureInPicture(int? textureId, double? top, double? left,
-      double? width, double? height) async {}
+  Future<void> enablePictureInPicture(
+    int? textureId,
+    double? top,
+    double? left,
+    double? width,
+    double? height,
+  ) async {}
 
   @override
   Future<bool?> isPictureInPictureEnabled(int? textureId) async {
@@ -152,7 +162,9 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> setAudioTrack(int? textureId, String? name, int? index) async {
-    controller.setAudioTrack(index.toString());
+    if (index != null) {
+      return controller.setAudioTrack(index);
+    }
   }
 
   @override
@@ -179,14 +191,11 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       final key = event.videoId;
       switch (event.type) {
         case 'initialized':
-          const Size size = Size(800, 600);
-          final time = double.tryParse(event.result) ?? 0;
-
           return VideoEvent(
             eventType: VideoEventType.initialized,
             key: key,
-            size: size,
-            duration: getTimeDurationFromSeconds(time),
+            size: const Size(800, 600), //TODO: actual stream size
+            duration: parseDuration(event.result),
           );
         case 'onEnd':
           return VideoEvent(
