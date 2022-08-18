@@ -239,28 +239,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
             eventType: VideoEventType.play,
             key: key,
           );
-        //
-        case 'seek':
-          final time = double.tryParse(event.result) ?? 0;
-          print('_PLAYER_EVENT: seek, time:$time');
-          return VideoEvent(
-            eventType: VideoEventType.seek,
-            key: key,
-            position: parseDuration(time),
-          );
-        //
-        // case 'pipStart':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.pipStart,
-        //     key: key,
-        //   );
-        //
-        // case 'pipStop':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.pipStop,
-        //     key: key,
-        //   );
-
         default:
           return VideoEvent(
             eventType: VideoEventType.unknown,
