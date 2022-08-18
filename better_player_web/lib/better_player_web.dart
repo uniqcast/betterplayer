@@ -234,7 +234,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
             key: key,
           );
         case 'play':
-          print('_PLAYER_EVENT: play');
           return VideoEvent(
             eventType: VideoEventType.play,
             key: key,
