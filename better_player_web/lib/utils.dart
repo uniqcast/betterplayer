@@ -1,6 +1,10 @@
-Duration parseDuration(dynamic num) {
+Duration parseDuration(dynamic value) {
   Duration duration;
-  final time = double.tryParse(num) ?? 0;
+  final time = value is num
+      ? value
+      : value is String
+          ? num.tryParse(value) ?? 0
+          : 0;
   if (!time.isFinite) {
     duration = const Duration(days: 365);
   } else {

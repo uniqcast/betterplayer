@@ -19,9 +19,10 @@ dependencies:
   video_js:
     git:
       url: https://github.com/uniqcast/video_js
-      ref: b26e63e3cde3ed64bc49b0d874b77dede0c9c9a7
-  #  video_js:
-  #    path: '../../video_js'
+      ref: 768858c01a015180323af9d15eed7c0127a0b15c
+
+#  video_js:
+#    path: '../../video_js'
 
   better_player_platform_interface:
     git:

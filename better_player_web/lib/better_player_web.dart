@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:better_player_platform_interface/better_player_platform_interface.dart';
 import 'package:better_player_web/utils.dart';
@@ -135,9 +136,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   @override
   Future<Duration> getPosition(int? textureId) async {
     final time = await controller.currentTime();
-    final seconds = time.truncate();
-    final miliseconds = ((time - seconds) * 1000).truncate();
-    return Duration(seconds: seconds, milliseconds: miliseconds);
+    return parseDuration(time);
   }
 
   @override
@@ -204,57 +203,41 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
             eventType: VideoEventType.completed,
             key: key,
           );
-        // case 'bufferingUpdate':
-        //   final List<dynamic> values = map['values'] as List;
-        //
-        //   return VideoEvent(
-        //     eventType: VideoEventType.bufferingUpdate,
-        //     key: key,
-        //     buffered: values.map<DurationRange>(_toDurationRange).toList(),
-        //   );
-        // case 'bufferingStart':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.bufferingStart,
-        //     key: key,
-        //   );
-        // case 'bufferingEnd':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.bufferingEnd,
-        //     key: key,
-        //   );
-        //
-        case 'isPaused':
-          final playing = !(event.result as bool);
+        case 'bufferingUpdate':
+          final bufferTimeRanges =
+              VideoJsTimeRange.fromJson(json.decode(event.result));
+          final duration = parseDuration(bufferTimeRanges.duration);
+          final bufferedStartDuration = parseDuration(bufferTimeRanges.start);
+          final bufferedEndDuration = parseDuration(bufferTimeRanges.end);
+          if (bufferedEndDuration == duration) {
+            return VideoEvent(
+              eventType: VideoEventType.bufferingEnd,
+              key: key,
+            );
+          } else {
+            return VideoEvent(
+              eventType: VideoEventType.bufferingUpdate,
+              key: key,
+              buffered: [
+                DurationRange(bufferedStartDuration, bufferedEndDuration),
+              ],
+            );
+          }
+        case 'bufferingStart':
           return VideoEvent(
-            eventType: playing ? VideoEventType.play : VideoEventType.pause,
+            eventType: VideoEventType.bufferingStart,
             key: key,
           );
-        //
-        // case 'pause':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.pause,
-        //     key: key,
-        //   );
-        //
-        // case 'seek':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.seek,
-        //     key: key,
-        //     position: Duration(milliseconds: map['position'] as int),
-        //   );
-        //
-        // case 'pipStart':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.pipStart,
-        //     key: key,
-        //   );
-        //
-        // case 'pipStop':
-        //   return VideoEvent(
-        //     eventType: VideoEventType.pipStop,
-        //     key: key,
-        //   );
-
+        case 'pause':
+          return VideoEvent(
+            eventType: VideoEventType.pause,
+            key: key,
+          );
+        case 'play':
+          return VideoEvent(
+            eventType: VideoEventType.play,
+            key: key,
+          );
         default:
           return VideoEvent(
             eventType: VideoEventType.unknown,
