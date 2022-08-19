@@ -39,8 +39,8 @@ packages:
     dependency: "direct main"
     description:
       path: better_player_web
-      ref: d6b067de80a8107e3ccdbeaaa84041a231d6ec7d
-      resolved-ref: d6b067de80a8107e3ccdbeaaa84041a231d6ec7d
+      ref: "9b951c2d992324d204c8df8265ce5f90ded02c90"
+      resolved-ref: "9b951c2d992324d204c8df8265ce5f90ded02c90"
       url: "https://github.com/uniqcast/betterplayer"
     source: git
     version: "1.0.0"
@@ -339,8 +339,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: "768858c01a015180323af9d15eed7c0127a0b15c"
-      resolved-ref: "768858c01a015180323af9d15eed7c0127a0b15c"
+      ref: ae2097b1fc97297834b799d1c601ef41a78e39a5
+      resolved-ref: ae2097b1fc97297834b799d1c601ef41a78e39a5
       url: "https://github.com/uniqcast/video_js"
     source: git
     version: "0.1.3"
