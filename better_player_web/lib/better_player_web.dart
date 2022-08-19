@@ -163,8 +163,8 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> setAudioTrack(int? textureId, String? name, int? index) async {
-    if (index != null) {
-      return controller.setAudioTrack(index);
+    if (index != null && name != null) {
+      return controller.setAudioTrack(index, name);
     }
   }
 
