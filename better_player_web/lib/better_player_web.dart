@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:better_player_platform_interface/better_player_platform_interface.dart';
-import 'package:better_player_web/utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:video_js/video_js.dart';
+import 'package:video_js/video_js.dart' as vjs;
 
 const playerId = 'uniqtv_player';
 
@@ -16,7 +14,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
     BetterPlayerPlatform.instance = BetterPlayerWeb();
   }
 
-  late VideoJsController controller;
+  late vjs.VideoJsController controller;
 
   @override
   Future<void> init() async {
@@ -34,9 +32,9 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
     // } catch (e) {
     //   print('------e $e');
     // }
-    controller = VideoJsController(
+    controller = vjs.VideoJsController(
       playerId,
-      videoJsOptions: VideoJsOptions(
+      videoJsOptions: vjs.VideoJsOptions(
         controls: false,
         loop: false,
         muted: false,
@@ -91,9 +89,6 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
       keySystems: keySystems,
       emeHeaders: dataSource.drmHeaders,
     );
-    VideoJsResults()
-        .onVolumeFromJsStream
-        .add(ResultFromVideoJs(playerId, 'onReady', 'true'));
     return;
   }
 
@@ -130,13 +125,12 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> seekTo(int? textureId, Duration? position) async {
-    return controller.setCurrentTime(position?.inSeconds ?? 0);
+    return controller.setCurrentTime(position ?? Duration.zero);
   }
 
   @override
-  Future<Duration> getPosition(int? textureId) async {
-    final time = await controller.currentTime();
-    return parseDuration(time);
+  Future<Duration> getPosition(int? textureId) {
+    return controller.currentTime();
   }
 
   @override
@@ -182,73 +176,27 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Stream<VideoEvent> videoEventsFor(int? textureId) {
-    return VideoJsResults()
+    return vjs.VideoJsResults()
         .onVolumeFromJsStream
         .stream
-        .map((ResultFromVideoJs event) {
-      if (playerId != event.videoId) {
+        .map((vjs.VideoEvent event) {
+      if (playerId != event.key) {
         return VideoEvent(eventType: VideoEventType.unknown, key: null);
       }
-      final key = event.videoId;
-      switch (event.type) {
-        case 'initialized':
-          return VideoEvent(
-            eventType: VideoEventType.initialized,
-            key: key,
-            size: const Size(800, 600), //TODO: actual stream size
-            duration: parseDuration(event.result),
-          );
-        case 'onEnd':
-          return VideoEvent(
-            eventType: VideoEventType.completed,
-            key: key,
-          );
-        case 'bufferingUpdate':
-          final bufferTimeRanges =
-              VideoJsTimeRange.fromJson(json.decode(event.result));
-          final duration = parseDuration(bufferTimeRanges.duration);
-          final bufferedStartDuration = parseDuration(bufferTimeRanges.start);
-          final bufferedEndDuration = parseDuration(bufferTimeRanges.end);
-          if (bufferedEndDuration == duration) {
-            return VideoEvent(
-              eventType: VideoEventType.bufferingEnd,
-              key: key,
-            );
-          } else {
-            return VideoEvent(
-              eventType: VideoEventType.bufferingUpdate,
-              key: key,
-              buffered: [
-                DurationRange(bufferedStartDuration, bufferedEndDuration),
-              ],
-            );
-          }
-        case 'bufferingStart':
-          return VideoEvent(
-            eventType: VideoEventType.bufferingStart,
-            key: key,
-          );
-        case 'pause':
-          return VideoEvent(
-            eventType: VideoEventType.pause,
-            key: key,
-          );
-        case 'play':
-          return VideoEvent(
-            eventType: VideoEventType.play,
-            key: key,
-          );
-        default:
-          return VideoEvent(
-            eventType: VideoEventType.unknown,
-            key: key,
-          );
-      }
+      return VideoEvent(
+        eventType: VideoEventType.values[event.eventType.index],
+        key: event.key,
+        duration: event.duration,
+        size: event.size,
+        position: event.position,
+        buffered:
+            event.buffered?.map((e) => DurationRange(e.start, e.end)).toList(),
+      );
     });
   }
 
   @override
   Widget buildView(int? textureId) {
-    return VideoJsWidget(videoJsController: controller);
+    return vjs.VideoJsWidget(videoJsController: controller);
   }
 }
