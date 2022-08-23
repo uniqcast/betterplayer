@@ -92,8 +92,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: b94a354aeb72dcb11708652a21b03671abbc8cb3
-      resolved-ref: b94a354aeb72dcb11708652a21b03671abbc8cb3
+      ref: fc43988ecbfc55a9ea2fcceb5c5eeb127a510487
+      resolved-ref: fc43988ecbfc55a9ea2fcceb5c5eeb127a510487
       url: "https://github.com/uniqcast/video_js"
     source: git
     version: "0.1.3"
