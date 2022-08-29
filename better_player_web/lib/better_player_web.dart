@@ -121,7 +121,12 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
     int? width,
     int? height,
     int? bitrate,
-  ) async {}
+  ) async {
+    if (bitrate == null || bitrate == 0) {
+      return controller.setDefaultTrack();
+    }
+    return controller.setQualityLevel(bitrate, width, height);
+  }
 
   @override
   Future<void> seekTo(int? textureId, Duration? position) async {
