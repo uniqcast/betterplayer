@@ -22,7 +22,7 @@ class BetterPlayerWithControls extends StatefulWidget {
 
 class BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
   BetterPlayerSubtitlesConfiguration get subtitlesConfiguration =>
-      widget.controller.betterPlayerConfiguration.subtitlesConfiguration;
+      widget.controller.betterPlayerSubtitlesConfiguration;
 
   BetterPlayerControlsConfiguration get controlsConfiguration =>
       widget.controller.betterPlayerControlsConfiguration;
