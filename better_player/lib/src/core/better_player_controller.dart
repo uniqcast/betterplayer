@@ -51,6 +51,13 @@ class BetterPlayerController {
   BetterPlayerControlsConfiguration get betterPlayerControlsConfiguration =>
       _betterPlayerControlsConfiguration;
 
+  ///Subtitles configuration
+  late BetterPlayerSubtitlesConfiguration _betterPlayerSubtitlesConfiguration;
+
+  ///Subtitles configuration
+  BetterPlayerSubtitlesConfiguration get betterPlayerSubtitlesConfiguration =>
+      _betterPlayerSubtitlesConfiguration;
+
   ///Expose all active eventListeners
   List<Function(BetterPlayerEvent)?> get eventListeners =>
       _eventListeners.sublist(1);
@@ -219,6 +226,8 @@ class BetterPlayerController {
   }) {
     _betterPlayerControlsConfiguration =
         betterPlayerConfiguration.controlsConfiguration;
+    _betterPlayerSubtitlesConfiguration =
+        betterPlayerConfiguration.subtitlesConfiguration;
     _eventListeners.add(eventListener);
 
     videoPlayerController = VideoPlayerController();
@@ -1208,7 +1217,7 @@ class BetterPlayerController {
   ///cache started for given [betterPlayerDataSource] then it will be ignored.
   Future<void> stopPreCache(
       BetterPlayerDataSource betterPlayerDataSource) async {
-    return VideoPlayerController?.stopPreCache(betterPlayerDataSource.url,
+    return VideoPlayerController.stopPreCache(betterPlayerDataSource.url,
         betterPlayerDataSource.cacheConfiguration?.key);
   }
 
@@ -1217,6 +1226,13 @@ class BetterPlayerController {
   void setBetterPlayerControlsConfiguration(
       BetterPlayerControlsConfiguration betterPlayerControlsConfiguration) {
     _betterPlayerControlsConfiguration = betterPlayerControlsConfiguration;
+  }
+
+  /// Sets the new [betterPlayerSubtitlesConfiguration] instance in the
+  /// controller.
+  void setBetterPlayerSubtitlesConfiguration(
+      BetterPlayerSubtitlesConfiguration betterPlayerSubtitlesConfiguration) {
+    _betterPlayerSubtitlesConfiguration = betterPlayerSubtitlesConfiguration;
   }
 
   /// Add controller internal event.
