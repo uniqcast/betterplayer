@@ -225,7 +225,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             size: event.size,
           );
           _initializingCompleter.complete(null);
-          _applyPlayPause();
           break;
         case VideoEventType.completed:
           value = value.copyWith(isPlaying: false, position: value.duration);
@@ -245,13 +244,13 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           break;
 
         case VideoEventType.play:
-          play();
+          value = value.copyWith(isPlaying: true);
           break;
         case VideoEventType.pause:
-          pause();
+          value = value.copyWith(isPlaying: false);
           break;
         case VideoEventType.seek:
-          seekTo(event.position);
+          value = value.copyWith(position: event.position);
           break;
         case VideoEventType.pipStart:
           value = value.copyWith(isPip: true);
@@ -538,13 +537,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// and silently clamped.
   Future<void> seekTo(Duration? position) async {
     _timer?.cancel();
-    bool isPlaying = value.isPlaying;
-    final int positionInMs = value.position.inMilliseconds;
-    final int durationInMs = value.duration?.inMilliseconds ?? 0;
-
-    if (positionInMs >= durationInMs && position?.inMilliseconds == 0) {
-      isPlaying = true;
-    }
     if (_isDisposed) {
       return;
     }
@@ -552,19 +544,13 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     Duration? positionToSeek = position;
     if (position! > value.duration!) {
       positionToSeek = value.duration;
-    } else if (position < const Duration()) {
-      positionToSeek = const Duration();
+    } else if (position < Duration.zero) {
+      positionToSeek = Duration.zero;
     }
     _seekPosition = positionToSeek;
 
     await _videoPlayerPlatform.seekTo(_textureId, positionToSeek);
     _updatePosition(position);
-
-    if (isPlaying) {
-      play();
-    } else {
-      pause();
-    }
   }
 
   /// Sets the audio volume of [this].
