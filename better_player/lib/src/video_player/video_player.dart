@@ -225,7 +225,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
             size: event.size,
           );
           _initializingCompleter.complete(null);
-          _applyPlayPause();
           break;
         case VideoEventType.completed:
           value = value.copyWith(isPlaying: false, position: value.duration);
@@ -245,13 +244,13 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           break;
 
         case VideoEventType.play:
-          play();
+          value = value.copyWith(isPlaying: true);
           break;
         case VideoEventType.pause:
-          pause();
+          value = value.copyWith(isPlaying: false);
           break;
         case VideoEventType.seek:
-          seekTo(event.position);
+          value = value.copyWith(position: event.position);
           break;
         case VideoEventType.pipStart:
           value = value.copyWith(isPip: true);
