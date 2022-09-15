@@ -16,7 +16,7 @@ packages:
       name: characters
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   collection:
     dependency: transitive
     description:
@@ -61,14 +61,14 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.4"
+    version: "0.1.5"
   meta:
     dependency: transitive
     description:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.0"
+    version: "1.8.0"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -91,11 +91,9 @@ packages:
   video_js:
     dependency: "direct main"
     description:
-      path: "."
-      ref: caaeaceb5ea144adc7af1cce131654810af11ffc
-      resolved-ref: caaeaceb5ea144adc7af1cce131654810af11ffc
-      url: "https://github.com/uniqcast/video_js"
-    source: git
+      path: "../../video_js"
+      relative: true
+    source: path
     version: "0.1.3"
 sdks:
   dart: ">=2.17.0 <3.0.0"
