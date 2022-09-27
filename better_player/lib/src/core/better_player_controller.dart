@@ -667,9 +667,10 @@ class BetterPlayerController {
     }
   }
 
-  //update player position
-  void updatePosition() {
+  //update player position and get value
+  VideoPlayerValue getValue() {
     videoPlayerController.updatePosition();
+    return videoPlayerController.value;
   }
 
   ///Set volume of player. Allows values from 0.0 to 1.0.
