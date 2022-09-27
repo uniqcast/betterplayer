@@ -91,9 +91,11 @@ packages:
   video_js:
     dependency: "direct main"
     description:
-      path: "../../video_js"
-      relative: true
-    source: path
+      path: "."
+      ref: "88ed9cfa2c140a1b8dc6cdcb5cb4f4e71b51a99b"
+      resolved-ref: "88ed9cfa2c140a1b8dc6cdcb5cb4f4e71b51a99b"
+      url: "https://github.com/uniqcast/video_js"
+    source: git
     version: "0.1.3"
 sdks:
   dart: ">=2.17.0 <3.0.0"

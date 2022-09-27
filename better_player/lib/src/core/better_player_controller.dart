@@ -667,6 +667,11 @@ class BetterPlayerController {
     }
   }
 
+  //update player position
+  void updatePosition() {
+    videoPlayerController.updatePosition();
+  }
+
   ///Set volume of player. Allows values from 0.0 to 1.0.
   Future<void> setVolume(double volume) async {
     if (volume < 0.0 || volume > 1.0) {
