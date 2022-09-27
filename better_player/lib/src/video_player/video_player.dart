@@ -185,7 +185,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   final Completer<void> _creatingCompleter = Completer<void>();
   int? _textureId;
 
-  Timer? _timer;
   bool _isDisposed = false;
   late Completer<void> _initializingCompleter;
   StreamSubscription<dynamic>? _eventSubscription;
@@ -228,7 +227,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           break;
         case VideoEventType.completed:
           value = value.copyWith(isPlaying: false, position: value.duration);
-          _timer?.cancel();
           break;
         case VideoEventType.bufferingUpdate:
           value = value.copyWith(
@@ -270,7 +268,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
       } else {
         value.copyWith(errorDescription: object.toString());
       }
-      _timer?.cancel();
       if (!_initializingCompleter.isCompleted) {
         _initializingCompleter.completeError(object);
       }
@@ -426,7 +423,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (!_isDisposed) {
       _isDisposed = true;
       value = VideoPlayerValue.uninitialized();
-      _timer?.cancel();
       await _eventSubscription?.cancel();
       await _videoPlayerPlatform.dispose(_textureId);
       videoEventStreamController.close();
@@ -442,7 +438,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// finished.
   Future<void> play() async {
     value = value.copyWith(isPlaying: true);
-    await _applyPlayPause();
+    await _videoPlayerPlatform.play(_textureId);
   }
 
   /// Sets whether or not the video should loop after playing once. See also
@@ -455,7 +451,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// Pauses the video.
   Future<void> pause() async {
     value = value.copyWith(isPlaying: false);
-    await _applyPlayPause();
+    await _videoPlayerPlatform.pause(_textureId);
   }
 
   Future<void> _applyLooping() async {
@@ -465,38 +461,11 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _videoPlayerPlatform.setLooping(_textureId, value.isLooping);
   }
 
-  Future<void> _applyPlayPause() async {
-    if (!_created || _isDisposed) {
-      return;
-    }
-    _timer?.cancel();
-    if (value.isPlaying) {
-      await _videoPlayerPlatform.play(_textureId);
-      _timer = Timer.periodic(
-        const Duration(milliseconds: 300),
-        (Timer timer) async {
-          if (_isDisposed) {
-            return;
-          }
-          final Duration? newPosition = await position;
-          final DateTime? newAbsolutePosition = await absolutePosition;
-          // ignore: invariant_booleans
-          if (_isDisposed) {
-            return;
-          }
-          _updatePosition(newPosition, absolutePosition: newAbsolutePosition);
-          if (_seekPosition != null && newPosition != null) {
-            final difference =
-                newPosition.inMilliseconds - _seekPosition!.inMilliseconds;
-            if (difference > 0) {
-              _seekPosition = null;
-            }
-          }
-        },
-      );
-    } else {
-      await _videoPlayerPlatform.pause(_textureId);
-    }
+  //update player position
+  Future<void> updatePosition() async {
+    final Duration? newPosition = await position;
+    final DateTime? newAbsolutePosition = await absolutePosition;
+    _updatePosition(newPosition, absolutePosition: newAbsolutePosition);
   }
 
   Future<void> _applyVolume() async {
@@ -536,7 +505,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// If [moment] is outside of the video's full range it will be automatically
   /// and silently clamped.
   Future<void> seekTo(Duration? position) async {
-    _timer?.cancel();
     if (_isDisposed) {
       return;
     }
@@ -597,7 +565,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   void _updatePosition(Duration? position, {DateTime? absolutePosition}) {
-    value = value.copyWith(position: _seekPosition ?? position);
+    value = value.copyWith(position: position);
     if (_seekPosition == null) {
       value = value.copyWith(absolutePosition: absolutePosition);
     }
