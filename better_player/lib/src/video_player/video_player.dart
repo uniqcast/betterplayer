@@ -438,7 +438,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// finished.
   Future<void> play() async {
     value = value.copyWith(isPlaying: true);
-    await _applyPlayPause();
+    await _videoPlayerPlatform.play(_textureId);
   }
 
   /// Sets whether or not the video should loop after playing once. See also
@@ -451,7 +451,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// Pauses the video.
   Future<void> pause() async {
     value = value.copyWith(isPlaying: false);
-    await _applyPlayPause();
+    await _videoPlayerPlatform.pause(_textureId);
   }
 
   Future<void> _applyLooping() async {
@@ -466,17 +466,6 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     final Duration? newPosition = await position;
     final DateTime? newAbsolutePosition = await absolutePosition;
     _updatePosition(newPosition, absolutePosition: newAbsolutePosition);
-  }
-
-  Future<void> _applyPlayPause() async {
-    if (!_created || _isDisposed) {
-      return;
-    }
-    if (value.isPlaying) {
-      await _videoPlayerPlatform.play(_textureId);
-    } else {
-      await _videoPlayerPlatform.pause(_textureId);
-    }
   }
 
   Future<void> _applyVolume() async {
