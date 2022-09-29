@@ -466,6 +466,13 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     final Duration? newPosition = await position;
     final DateTime? newAbsolutePosition = await absolutePosition;
     _updatePosition(newPosition, absolutePosition: newAbsolutePosition);
+    if (_seekPosition != null && newPosition != null) {
+      final difference =
+          newPosition.inMilliseconds - _seekPosition!.inMilliseconds;
+      if (difference.abs() < 1000) {
+        _seekPosition = null;
+      }
+    }
   }
 
   Future<void> _applyVolume() async {
@@ -565,7 +572,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   }
 
   void _updatePosition(Duration? position, {DateTime? absolutePosition}) {
-    value = value.copyWith(position: position);
+    value = value.copyWith(position: _seekPosition ?? position);
     if (_seekPosition == null) {
       value = value.copyWith(absolutePosition: absolutePosition);
     }
