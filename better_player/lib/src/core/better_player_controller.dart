@@ -1161,14 +1161,14 @@ class BetterPlayerController {
   }
 
   ///Set [audioTrack] in player. Works only for HLS or DASH streams.
-  void setAudioTrack(BetterPlayerAsmsAudioTrack audioTrack) {
+  Future<void> setAudioTrack(BetterPlayerAsmsAudioTrack audioTrack) async {
     if (audioTrack.language == null) {
       _betterPlayerAsmsAudioTrack = null;
       return;
     }
 
     _betterPlayerAsmsAudioTrack = audioTrack;
-    videoPlayerController.setAudioTrack(audioTrack.label, audioTrack.id);
+    await videoPlayerController.setAudioTrack(audioTrack.label, audioTrack.id);
   }
 
   ///Enable or disable audio mixing with other sound within device.

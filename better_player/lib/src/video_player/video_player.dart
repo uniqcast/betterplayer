@@ -589,8 +589,8 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     value = value.copyWith();
   }
 
-  void setAudioTrack(String? name, int? index) {
-    _videoPlayerPlatform.setAudioTrack(_textureId, name, index);
+  Future<void> setAudioTrack(String? name, int? index) {
+    return _videoPlayerPlatform.setAudioTrack(_textureId, name, index);
   }
 
   void setMixWithOthers(bool mixWithOthers) {
