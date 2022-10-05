@@ -24,7 +24,6 @@
     * [Custom element in overflow menu](customelementinoverflowmenu.md)
     * [Enable/disable controls](enabledisablecontrols.md)
     * [Overridden aspect ratio](overriddenaspectratio.md)
-    * [Overridden fit](overriddenfit.md)
     * [Overriden duration](overriddenduration.md)
     * [Mix audio with others](mixaudiowithothers.md)
     * [Manual dispose](manualdispose.md)
