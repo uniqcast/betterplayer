@@ -77,7 +77,6 @@ This plugin is based on [Chewie](https://github.com/brianegan/chewie). Chewie is
 ✔️ Video in ListView support  
 ✔️ Subtitles support: (formats: SRT, WEBVTT with HTML tags support; subtitles from HLS; multiple subtitles for video)  
 ✔️ HTTP Headers support  
-✔️ BoxFit of video support  
 ✔️ Playback speed support  
 ✔️ HLS support (track, subtitles (also segmented), audio track selection)  
 ✔️ DASH support (track, subtitles, audio track selection)     

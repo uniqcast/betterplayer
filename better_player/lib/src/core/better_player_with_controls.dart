@@ -133,7 +133,6 @@ class BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
             angle: rotation * pi / 180,
             child: _BetterPlayerVideoFitWidget(
               betterPlayerController,
-              betterPlayerController.getFit(),
             ),
           ),
           betterPlayerController.betterPlayerConfiguration.overlay ??
@@ -182,13 +181,11 @@ class BetterPlayerWithControlsState extends State<BetterPlayerWithControls> {
 ///Widget used to set the proper box fit of the video. Default fit is 'fill'.
 class _BetterPlayerVideoFitWidget extends StatefulWidget {
   const _BetterPlayerVideoFitWidget(
-    this.betterPlayerController,
-    this.boxFit, {
+    this.betterPlayerController, {
     Key? key,
   }) : super(key: key);
 
   final BetterPlayerController betterPlayerController;
-  final BoxFit boxFit;
 
   @override
   _BetterPlayerVideoFitWidgetState createState() =>
@@ -273,22 +270,7 @@ class _BetterPlayerVideoFitWidgetState
   Widget build(BuildContext context) {
     // need to have the player rendered on web all the time so can use the controller
     if (kIsWeb || (_initialized && _started)) {
-      return Center(
-        child: ClipRect(
-          child: SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: FittedBox(
-              fit: widget.boxFit,
-              child: SizedBox(
-                width: controller.value.size?.width ?? 0,
-                height: controller.value.size?.height ?? 0,
-                child: VideoPlayer(controller),
-              ),
-            ),
-          ),
-        ),
-      );
+      return VideoPlayer(controller);
     } else {
       return const SizedBox();
     }
