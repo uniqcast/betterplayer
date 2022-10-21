@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:better_player_platform_interface/better_player_platform_interface.dart';
+import 'package:better_player_web/smart_web_player.dart';
+import 'package:better_player_web/util.dart';
+import 'package:better_player_web/video_js_widget.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:video_js/video_js.dart' as vjs;
+import 'package:js/js.dart';
 
 const playerId = 'uniqtv_player';
 
@@ -14,7 +18,10 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
     BetterPlayerPlatform.instance = BetterPlayerWeb();
   }
 
-  late vjs.VideoJsController controller;
+  final VideoJsPlayer player = VideoJsPlayer();
+  final String textureUid = 'better_player_web_view';
+  final StreamController<VideoEvent> eventStream =
+      StreamController<VideoEvent>.broadcast();
 
   @override
   Future<void> init() async {
@@ -32,25 +39,14 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
     // } catch (e) {
     //   print('------e $e');
     // }
-    controller = vjs.VideoJsController(
-      playerId,
-      videoJsOptions: vjs.VideoJsOptions(
-        controls: false,
-        loop: false,
-        muted: false,
-        aspectRatio: '16:9',
-        fluid: false,
-        language: 'en',
-        liveui: false,
-        preferFullWindow: false,
-        suppressNotSupportedError: false,
-      ),
-    );
+    final view = player.viewElement();
+    // ignore: undefined_prefixed_name
+    ui.platformViewRegistry.registerViewFactory(textureUid, (int id) => view);
   }
 
   @override
   Future<void> dispose(int? textureId) async {
-    controller.dispose();
+    return player.destroy();
   }
 
   @override
@@ -62,32 +58,20 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> setDataSource(int? textureId, DataSource dataSource) async {
-    Map<String, dynamic>? keySystems;
-    switch (dataSource.drmType) {
-      case DrmType.widevine:
-        keySystems = {'com.widevine.alpha': dataSource.licenseUrl};
-        break;
-      case DrmType.fairplay:
-        keySystems = {
-          'com.apple.fps.1_0': {
-            'certificateUri': dataSource.certificateUrl,
-            'licenseUri': dataSource.licenseUrl
-          }
-        };
-        break;
-      case DrmType.clearKey:
-        keySystems = {'org.w3.clearkey': dataSource.licenseUrl};
-        break;
-      case DrmType.token:
-      case null:
-        // don't need to do anything
-        break;
-    }
-    await controller.setSRC(
+    await player.setSrc(
       dataSource.uri ?? '',
-      type: dataSource.videoExtension ?? 'application/x-mpegURL',
-      keySystems: keySystems,
-      emeHeaders: dataSource.drmHeaders,
+      dataSource.drmType != null
+          ? Drm(
+              type: dataSource.drmType!.name,
+              data: DrmData(
+                licenseUrl: dataSource.licenseUrl!,
+                certificateUrl: dataSource.certificateUrl,
+              ),
+              headers: dataSource.drmHeaders != null
+                  ? mapToJsObject(dataSource.drmHeaders!)
+                  : null,
+            )
+          : null,
     );
     return;
   }
@@ -99,17 +83,17 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> play(int? textureId) async {
-    return controller.play();
+    return player.play();
   }
 
   @override
   Future<void> pause(int? textureId) async {
-    return controller.pause();
+    return player.pause();
   }
 
   @override
   Future<void> setVolume(int? textureId, double volume) async {
-    return controller.setVolume(volume);
+    return player.setVolume(volume);
   }
 
   @override
@@ -122,20 +106,17 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
     int? height,
     int? bitrate,
   ) async {
-    if (bitrate == null || bitrate == 0) {
-      return controller.setDefaultTrack();
-    }
-    return controller.setQualityLevel(bitrate, width, height);
+    return player.setQuality(bitrate, width, height);
   }
 
   @override
   Future<void> seekTo(int? textureId, Duration? position) async {
-    return controller.setCurrentTime(position ?? Duration.zero);
+    return player.seekTo(position?.inSeconds ?? 0);
   }
 
   @override
-  Future<Duration> getPosition(int? textureId) {
-    return controller.currentTime();
+  Future<Duration> getPosition(int? textureId) async {
+    return parseDuration(player.position());
   }
 
   @override
@@ -163,7 +144,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   @override
   Future<void> setAudioTrack(int? textureId, String? name, int? index) async {
     if (index != null && name != null) {
-      return controller.setAudioTrack(index, name);
+      return player.setAudioTrack(index, name);
     }
   }
 
@@ -181,27 +162,51 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Stream<VideoEvent> videoEventsFor(int? textureId) {
-    return vjs.VideoJsResults()
-        .onVolumeFromJsStream
-        .stream
-        .map((vjs.VideoEvent event) {
-      if (playerId != event.key) {
-        return VideoEvent(eventType: VideoEventType.unknown, key: null);
-      }
-      return VideoEvent(
-        eventType: VideoEventType.values[event.eventType.index],
-        key: event.key,
-        duration: event.duration,
-        size: event.size,
-        position: event.position,
-        buffered:
-            event.buffered?.map((e) => DurationRange(e.start, e.end)).toList(),
-      );
-    });
+    return eventStream.stream;
   }
 
   @override
   Widget buildView(int? textureId) {
-    return vjs.VideoJsWidget(videoJsController: controller);
+    return VideoWidget(
+      onShow: () async {
+        print("ON SHOW");
+        await player.init();
+        if (player.isInitialized()) {
+          print("already initialized");
+          return;
+        }
+        print("initialize events");
+        player.onEvent(
+          allowInterop((event) {
+            eventStream.add(
+              VideoEvent(
+                key: event.key,
+                eventType: VideoEventType.values.byName(event.type),
+                duration: event.duration != null
+                    ? parseDuration(event.duration)
+                    : null,
+                size: event.size != null
+                    ? ui.Size(
+                        event.size!.width.toDouble(),
+                        event.size!.height.toDouble(),
+                      )
+                    : null,
+                buffered: event.buffered != null
+                    ? event.buffered!
+                        .map(
+                          (e) => DurationRange(
+                            parseDuration(e.start),
+                            parseDuration(e.end),
+                          ),
+                        )
+                        .toList()
+                    : null,
+              ),
+            );
+          }),
+        );
+      },
+      textureId: textureUid,
+    );
   }
 }

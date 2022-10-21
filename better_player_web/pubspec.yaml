@@ -16,10 +16,6 @@ dependencies:
   flutter_web_plugins:
     sdk: flutter
 
-  video_js:
-    git:
-      url: https://github.com/uniqcast/video_js
-      ref: 0d3785bd9fc63167cbe034b4950e49ffbc989d5f
 #  video_js:
 #    path: '../../video_js'
 
@@ -28,6 +24,7 @@ dependencies:
       url: https://github.com/uniqcast/betterplayer
       ref: afc24df1c8452aa71c01828c99da8dd355167872
       path: better_player_platform_interface
+  js: ^0.6.4
 #  better_player_platform_interface:
 #    path: '../better_player_platform_interface'
 
