@@ -1,4 +1,4 @@
-@JS()
+@JS('SmartWebPlayer')
 library smart_web_player;
 
 import 'dart:html' as html;
@@ -39,6 +39,7 @@ class Quality {
 @anonymous
 class BufferedRange {
   external num get start;
+
   external num get end;
 
   external factory BufferedRange({
@@ -51,7 +52,9 @@ class BufferedRange {
 @anonymous
 class Size {
   external num get width;
+
   external num get height;
+
   external factory Size({
     num? width,
     num? height,
@@ -62,9 +65,13 @@ class Size {
 @anonymous
 class PlayerEvent {
   external String get key;
+
   external String get type;
+
   external List<BufferedRange>? get buffered;
+
   external num? get duration;
+
   external Size? get size;
 
   external factory PlayerEvent({
@@ -79,24 +86,39 @@ class PlayerEvent {
 typedef PlayerEventCallback = void Function(PlayerEvent event);
 
 @JS()
-class VideoJsPlayer {
-  external factory VideoJsPlayer();
+class BasePlayer {
+  external factory BasePlayer();
 
   external bool isInitialized();
+
   external html.Element viewElement();
+
   external Future<void> init();
+
   external Future<void> destroy();
+
   external Future<void> setSrc(String url, Drm? drm);
+
   external Future<void> play();
+
   external Future<void> pause();
+
   external Future<void> seekTo(num position);
+
   external Future<num> position();
+
   external Future<void> setVolume(num volume);
+
   external Future<void> setAudioTrack(
     num index,
     String id,
   );
+
   external Future<List<Quality>> getQualities();
+
   external Future<void> setQuality(num? bitrate, num? width, num? height);
+
   external void onEvent(PlayerEventCallback listener);
 }
+
+external BasePlayer getSmartPlayer();

@@ -18,7 +18,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
     BetterPlayerPlatform.instance = BetterPlayerWeb();
   }
 
-  final VideoJsPlayer player = VideoJsPlayer();
+  final BasePlayer player = getSmartPlayer();
   final String textureUid = 'better_player_web_view';
   final StreamController<VideoEvent> eventStream =
       StreamController<VideoEvent>.broadcast();
