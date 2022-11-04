@@ -170,11 +170,11 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
     return VideoWidget(
       onShow: () async {
         print("ON SHOW");
-        await player.init();
         if (player.isInitialized()) {
           print("already initialized");
           return;
         }
+        await player.init();
         print("initialize events");
         player.onEvent(
           allowInterop((event) {
