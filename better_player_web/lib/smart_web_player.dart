@@ -93,30 +93,30 @@ class BasePlayer {
 
   external html.Element viewElement();
 
-  external Future<void> init();
+  external dynamic init();
 
-  external Future<void> destroy();
+  external dynamic destroy();
 
-  external Future<void> setSrc(String url, Drm? drm);
+  external dynamic setSrc(String url, Drm? drm);
 
-  external Future<void> play();
+  external dynamic play();
 
-  external Future<void> pause();
+  external dynamic pause();
 
-  external Future<void> seekTo(num position);
+  external dynamic seekTo(num position);
 
-  external Future<num> position();
+  external dynamic position();
 
-  external Future<void> setVolume(num volume);
+  external dynamic setVolume(num volume);
 
-  external Future<void> setAudioTrack(
+  external dynamic setAudioTrack(
     num index,
     String id,
   );
 
-  external Future<List<Quality>> getQualities();
+  external dynamic getQualities();
 
-  external Future<void> setQuality(num? bitrate, num? width, num? height);
+  external dynamic setQuality(num? bitrate, num? width, num? height);
 
   external void onEvent(PlayerEventCallback listener);
 }

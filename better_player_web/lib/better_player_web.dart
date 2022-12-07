@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:js_util';
 import 'dart:ui' as ui;
 
 import 'package:better_player_platform_interface/better_player_platform_interface.dart';
@@ -46,7 +47,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> dispose(int? textureId) async {
-    return player.destroy();
+    return promiseToFuture(player.destroy());
   }
 
   @override
@@ -58,20 +59,22 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> setDataSource(int? textureId, DataSource dataSource) async {
-    await player.setSrc(
-      dataSource.uri ?? '',
-      dataSource.drmType != null
-          ? Drm(
-              type: dataSource.drmType!.name,
-              data: DrmData(
-                licenseUrl: dataSource.licenseUrl!,
-                certificateUrl: dataSource.certificateUrl,
-              ),
-              headers: dataSource.drmHeaders != null
-                  ? mapToJsObject(dataSource.drmHeaders!)
-                  : null,
-            )
-          : null,
+    await promiseToFuture(
+      player.setSrc(
+        dataSource.uri ?? '',
+        dataSource.drmType != null
+            ? Drm(
+                type: dataSource.drmType!.name,
+                data: DrmData(
+                  licenseUrl: dataSource.licenseUrl!,
+                  certificateUrl: dataSource.certificateUrl,
+                ),
+                headers: dataSource.drmHeaders != null
+                    ? mapToJsObject(dataSource.drmHeaders!)
+                    : null,
+              )
+            : null,
+      ),
     );
     return;
   }
@@ -83,17 +86,17 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> play(int? textureId) async {
-    return player.play();
+    return promiseToFuture(player.play());
   }
 
   @override
   Future<void> pause(int? textureId) async {
-    return player.pause();
+    return promiseToFuture(player.pause());
   }
 
   @override
   Future<void> setVolume(int? textureId, double volume) async {
-    return player.setVolume(volume);
+    return promiseToFuture(player.setVolume(volume));
   }
 
   @override
@@ -106,17 +109,18 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
     int? height,
     int? bitrate,
   ) async {
-    return player.setQuality(bitrate, width, height);
+    return promiseToFuture(player.setQuality(bitrate, width, height));
   }
 
   @override
   Future<void> seekTo(int? textureId, Duration? position) async {
-    return player.seekTo(position?.inSeconds ?? 0);
+    return promiseToFuture(player.seekTo(position?.inSeconds ?? 0));
   }
 
   @override
   Future<Duration> getPosition(int? textureId) async {
-    return parseDuration(player.position());
+    final position = await promiseToFuture(player.position());
+    return parseDuration(position);
   }
 
   @override
@@ -144,7 +148,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   @override
   Future<void> setAudioTrack(int? textureId, String? name, int? index) async {
     if (index != null && name != null) {
-      return player.setAudioTrack(index, name);
+      return promiseToFuture(player.setAudioTrack(index, name));
     }
   }
 
