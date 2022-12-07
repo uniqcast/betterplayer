@@ -39,8 +39,8 @@ packages:
     dependency: "direct main"
     description:
       path: better_player_web
-      ref: "1d0a69e5c962b5a72116aee6c165ee29d0192d47"
-      resolved-ref: "1d0a69e5c962b5a72116aee6c165ee29d0192d47"
+      ref: afbecc46b2009d2334f33a27ae796ed1da4d6bad
+      resolved-ref: afbecc46b2009d2334f33a27ae796ed1da4d6bad
       url: "https://github.com/uniqcast/betterplayer"
     source: git
     version: "1.0.0"

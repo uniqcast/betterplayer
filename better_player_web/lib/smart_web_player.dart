@@ -84,7 +84,10 @@ class PlayerEvent {
 }
 
 typedef PlayerEventCallback = void Function(PlayerEvent event);
-
+@JS()
+class Promise<T>{
+ external factory Promise(dynamic Function(dynamic Function(dynamic value) resolve, dynamic Function(dynamic error) reject) executor);
+}
 @JS()
 class BasePlayer {
   external factory BasePlayer();
@@ -93,30 +96,30 @@ class BasePlayer {
 
   external html.Element viewElement();
 
-  external dynamic init();
+  external Promise<void> init();
 
-  external dynamic destroy();
+  external Promise<void> destroy();
 
-  external dynamic setSrc(String url, Drm? drm);
+  external Promise<void> setSrc(String url, Drm? drm);
 
-  external dynamic play();
+  external Promise<void> play();
 
-  external dynamic pause();
+  external Promise<void> pause();
 
-  external dynamic seekTo(num position);
+  external Promise<void> seekTo(num position);
 
-  external dynamic position();
+  external Promise<num> position();
 
-  external dynamic setVolume(num volume);
+  external Promise<void> setVolume(num volume);
 
-  external dynamic setAudioTrack(
+  external Promise<void> setAudioTrack(
     num index,
     String id,
   );
 
-  external dynamic getQualities();
+  external Promise<List<Quality>> getQualities();
 
-  external dynamic setQuality(num? bitrate, num? width, num? height);
+  external Promise<void> setQuality(num? bitrate, num? width, num? height);
 
   external void onEvent(PlayerEventCallback listener);
 }
