@@ -3,7 +3,7 @@ description: A common platform interface for the better_player plugin.
 repository: https://github.com/jhomlala/betterplayer
 issue_tracker: https://github.com/jhomlala/betterplayer/issues
 version: 1.0.0
-
+publish_to: none
 environment:
   sdk: '>=2.17.0 <3.0.0'
   flutter: ">=3.0.0"

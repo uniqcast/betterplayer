@@ -93,6 +93,9 @@ class BetterPlayerController {
   BetterPlayerSubtitlesSource? get betterPlayerSubtitlesSource =>
       _betterPlayerSubtitlesSource;
 
+  BetterPlayerPlatformSubtitleModel? _betterPlayerPlatformSubtitlesSource;
+  BetterPlayerPlatformSubtitleModel? get betterPlayerPlatformSubtitlesSource =>
+      _betterPlayerPlatformSubtitlesSource;
   ///Subtitles lines for current data source.
   List<BetterPlayerSubtitle> subtitlesLines = [];
 
@@ -370,6 +373,35 @@ class BetterPlayerController {
     if (!_disposed && !sourceInitialize) {
       _postControllerEvent(BetterPlayerControllerEvent.changeSubtitles);
     }
+  }
+
+  Future<List<BetterPlayerPlatformSubtitleModel>> getSubtitleTracks() async{
+    return await videoPlayerController.getSubtitles();
+  }
+  ///Setup subtitles to be displayed from given subtitle source.
+  ///If subtitles source is segmented then don't load videos at start. Videos
+  ///will load with just in time policy.
+  Future<void> setupPlatformSubtitleSource(BetterPlayerPlatformSubtitleModel subtitlesSource,
+      {bool sourceInitialize = false}) async {
+    _betterPlayerPlatformSubtitlesSource = subtitlesSource;
+    await videoPlayerController.setSubtitleTrack(subtitlesSource.language,subtitlesSource.index);
+    // subtitlesLines.clear();
+    // _asmsSegmentsLoaded.clear();
+    // _asmsSegmentsLoading = false;
+    //
+    // if (subtitlesSource.type != BetterPlayerSubtitlesSourceType.none) {
+    //   if (subtitlesSource.asmsIsSegmented == true) {
+    //     return;
+    //   }
+    //   final subtitlesParsed =
+    //   await BetterPlayerSubtitlesFactory.parseSubtitles(subtitlesSource);
+    //   subtitlesLines.addAll(subtitlesParsed);
+    // }
+    //
+    // _postEvent(BetterPlayerEvent(BetterPlayerEventType.changedSubtitles));
+    // if (!_disposed && !sourceInitialize) {
+    //   _postControllerEvent(BetterPlayerControllerEvent.changeSubtitles);
+    // }
   }
 
   ///Load ASMS subtitles segments for given [position].

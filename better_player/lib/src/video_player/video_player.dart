@@ -6,7 +6,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:better_player/src/configuration/better_player_buffering_configuration.dart';
+import 'package:better_player/better_player.dart';
 import 'package:better_player_platform_interface/better_player_platform_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -591,6 +591,18 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   Future<void> setAudioTrack(String? name, int? index) {
     return _videoPlayerPlatform.setAudioTrack(_textureId, name, index);
+  }
+
+  Future<List<BetterPlayerPlatformSubtitleModel>> getSubtitles() async{
+      final subtitles =  await _videoPlayerPlatform.getSubtitleTracks(_textureId);
+      if(subtitles != null){
+        return subtitles.entries.map((e) => BetterPlayerPlatformSubtitleModel(index: e.key, language: e.value)).toList();
+      }
+      return [BetterPlayerPlatformSubtitleModel(index: -1, language: 'Default Subtitle')];
+  }
+
+  Future<void> setSubtitleTrack(String? name, int? index) {
+    return _videoPlayerPlatform.setSubtitleTrack(_textureId, name,index);
   }
 
   void setMixWithOthers(bool mixWithOthers) {

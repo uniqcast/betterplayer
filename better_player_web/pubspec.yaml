@@ -19,14 +19,14 @@ dependencies:
 #  video_js:
 #    path: '../../video_js'
 
-  better_player_platform_interface:
-    git:
-      url: https://github.com/uniqcast/betterplayer
-      ref: afc24df1c8452aa71c01828c99da8dd355167872
-      path: better_player_platform_interface
-  js: ^0.6.4
 #  better_player_platform_interface:
-#    path: '../better_player_platform_interface'
+#    git:
+#      url: https://github.com/uniqcast/betterplayer
+#      ref: afc24df1c8452aa71c01828c99da8dd355167872
+#      path: better_player_platform_interface
+  js: ^0.6.4
+  better_player_platform_interface:
+    path: '../better_player_platform_interface'
 
 dev_dependencies:
   flutter_lints: ^2.0.1
