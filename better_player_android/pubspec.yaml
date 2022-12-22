@@ -3,7 +3,7 @@ description: Android implementation of the better_player plugin.
 repository: https://github.com/jhomlala/betterplayer
 issue_tracker: https://github.com/jhomlala/betterplayer/issues
 version: 1.0.0
-
+publish_to: none
 environment:
   sdk: '>=2.17.0 <3.0.0'
   flutter: ">=3.0.0"
@@ -13,6 +13,8 @@ flutter:
     implements: better_player
     platforms:
       android:
+#        pluginClass: AndroidBetterPlayer
+#        fileName: better_player_android.dart
         dartPluginClass: AndroidBetterPlayer
         package: com.jhomlala.better_player
         pluginClass: BetterPlayerPlugin
@@ -20,8 +22,8 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  #  better_player_platform_interface:
-  #    path: ../better_player_platform_interface
+#  better_player_platform_interface:
+#    path: ../better_player_platform_interface
   better_player_platform_interface:
     git:
       url: https://github.com/uniqcast/betterplayer

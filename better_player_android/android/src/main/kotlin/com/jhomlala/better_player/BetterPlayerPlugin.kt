@@ -208,6 +208,19 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
                 }
                 result.success(null)
             }
+            SET_SUBTITLE_TRACK_METHOD-> {
+                val name = call.argument<String?>(NAME_PARAMETER)
+                val index = call.argument<Int?>(INDEX_PARAMETER)
+                if (name != null && index !=null) {
+                    player.setSubtitleTrack(name,index)
+                }
+                result.success(null)
+            }
+            GET_SUBTITLE_TRACKS_METHOD-> {
+                val subtitles = player.getSubtitleTracks()
+                result.success(subtitles)
+
+            }
             SET_MIX_WITH_OTHERS_METHOD -> {
                 val mixWitOthers = call.argument<Boolean?>(
                     MIX_WITH_OTHERS_PARAMETER
@@ -537,6 +550,8 @@ class BetterPlayerPlugin : FlutterPlugin, ActivityAware, MethodCallHandler {
         private const val SET_SPEED_METHOD = "setSpeed"
         private const val SET_TRACK_PARAMETERS_METHOD = "setTrackParameters"
         private const val SET_AUDIO_TRACK_METHOD = "setAudioTrack"
+        private const val SET_SUBTITLE_TRACK_METHOD = "setSubtitleTrack"
+        private const val GET_SUBTITLE_TRACKS_METHOD = "getSubtitleTracks"
         private const val ENABLE_PICTURE_IN_PICTURE_METHOD = "enablePictureInPicture"
         private const val DISABLE_PICTURE_IN_PICTURE_METHOD = "disablePictureInPicture"
         private const val IS_PICTURE_IN_PICTURE_SUPPORTED_METHOD = "isPictureInPictureSupported"

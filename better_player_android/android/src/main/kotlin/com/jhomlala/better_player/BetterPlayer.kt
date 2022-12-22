@@ -42,6 +42,7 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.util.Log
 import android.view.Surface
+import android.view.accessibility.CaptioningManager
 import androidx.lifecycle.Observer
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource
 import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource
@@ -57,6 +58,7 @@ import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.drm.DrmSessionManagerProvider
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
+import com.google.android.exoplayer2.text.Cue
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride
 import com.google.android.exoplayer2.trackselection.TrackSelectionOverrides
 import com.google.android.exoplayer2.upstream.DataSource
@@ -66,6 +68,7 @@ import java.io.File
 import java.lang.Exception
 import java.lang.IllegalStateException
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.math.max
 import kotlin.math.min
 
@@ -480,7 +483,18 @@ internal class BetterPlayer(
                     }
                 }
             }
+            override  fun onCues(cues: List<Cue>){
+                println("cue group size: " + cues.size)
+                val event : MutableMap<String, Any?> = HashMap()
+                event["event"] = "subtitleUpdate"
+                event["subtitleLines"] = ""
 
+                    for (cue in cues) {
+                        println("Subtitle to show: " + cue.text)
+                       event["subtitleLines"] = event["subtitleLines"].toString() + cue.text + "\n"
+                    }
+                eventSink.success(event)
+            }
             override fun onPlayerError(error: PlaybackException) {
                 eventSink.error("VideoError", "Video player had error $error", "")
             }
@@ -652,6 +666,68 @@ internal class BetterPlayer(
         mediaSession = null
     }
 
+    fun setSubtitleTrack(name: String, index: Int) {
+        Log.v("setSubtitleTrack", name)
+        try {
+            val mappedTrackInfo = trackSelector.currentMappedTrackInfo
+            if (mappedTrackInfo != null) {
+                for (rendererIndex in 0 until mappedTrackInfo.rendererCount) {
+                    if (mappedTrackInfo.getRendererType(rendererIndex) != C.TRACK_TYPE_TEXT) {
+                        continue
+                    }
+                    Log.v("setSubtitleTrack", "has text")
+                    val trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex)
+                    for (groupIndex in 0 until trackGroupArray.length) {
+                        val group = trackGroupArray[groupIndex]
+                        for (groupElementIndex in 0 until group.length) {
+                            val label = group.getFormat(groupElementIndex).label
+                            val language = group.getFormat(groupElementIndex).language
+
+                            if (name == label && index == groupIndex && language != null) {
+                                Log.v("setSubtitleTrack", "label: $label, language: $language")
+                                if(exoPlayer !=null) {
+                                    exoPlayer.trackSelectionParameters =
+                                        exoPlayer.trackSelectionParameters.buildUpon().setPreferredTextLanguages(language).build()
+                                }
+                                return
+                            }
+
+                        }
+                    }
+                }
+            }
+        } catch (exception: Exception) {
+            Log.e(TAG, "setSubtitleTrack failed$exception")
+        }
+    }
+
+    fun getSubtitleTracks(): HashMap<Int, String> {
+        try {
+            val mappedTrackInfo = trackSelector.currentMappedTrackInfo ?: return HashMap()
+            val subtitles = HashMap<Int, String>()
+            for (rendererIndex in 0 until mappedTrackInfo.rendererCount) {
+                if (mappedTrackInfo.getRendererType(rendererIndex) != C.TRACK_TYPE_TEXT) {
+                    continue
+                }
+                val trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex)
+                for (groupIndex in 0 until trackGroupArray.length) {
+                    val group = trackGroupArray[groupIndex]
+                    for (groupElementIndex in 0 until group.length) {
+                        val format = group.getFormat(groupElementIndex)
+                        if (format.label != null) {
+                            subtitles[groupIndex] = format.label!!
+                        }
+
+                    }
+                }
+            }
+            return subtitles
+        } catch (exception: Exception) {
+            Log.e(TAG, "getSubtitleTracks failed$exception")
+            return HashMap()
+        }
+    }
+
     fun setAudioTrack(name: String, index: Int) {
         try {
             val mappedTrackInfo = trackSelector.currentMappedTrackInfo
@@ -702,6 +778,7 @@ internal class BetterPlayer(
             Log.e(TAG, "setAudioTrack failed$exception")
         }
     }
+
 
     private fun setAudioTrack(rendererIndex: Int, groupIndex: Int, groupElementIndex: Int) {
         val mappedTrackInfo = trackSelector.currentMappedTrackInfo

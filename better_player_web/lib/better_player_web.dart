@@ -153,6 +153,28 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   }
 
   @override
+  Future<Map?> getSubtitleTracks(int? textureId) async {
+    final subtitleObjects = await promiseToFuture(player.getSubtitleTracks());
+    final Map subtitlesMap = {};
+    if (subtitleObjects is List<dynamic> && subtitleObjects.isNotEmpty) {
+      try {
+        final subtitles =
+            subtitleObjects.map((e) => e as SubtitleTrack).toList();
+        subtitlesMap
+            .addEntries(subtitles.map((e) => MapEntry(e.index, e.language)));
+      } catch (e) {
+        print('Can not parse subtitles $e');
+      }
+    }
+    return subtitlesMap;
+  }
+
+  @override
+  Future<void> setSubtitleTrack(int? textureId, String? name, int? index) {
+    return promiseToFuture(player.setSubtitleTrack(index, name));
+  }
+
+  @override
   Future<void> setMixWithOthers(int? textureId, bool mixWithOthers) async {}
 
   @override

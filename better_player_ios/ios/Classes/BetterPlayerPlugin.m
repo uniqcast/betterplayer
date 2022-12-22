@@ -424,7 +424,15 @@ bool _remoteCommandsInitialized = false;
             NSString* name = argsMap[@"name"];
             int index = [argsMap[@"index"] intValue];
             [player setAudioTrack:name index: index];
-        } else if ([@"setMixWithOthers" isEqualToString:call.method]){
+        }else if([@"setSubtitleTrack" isEqualToString:call.method]){
+          NSString* name = argsMap[@"name"];
+          int index = [argsMap[@"index"] intValue];
+          [player setSubtitleTrack:name index: index];
+        }
+        else if([@"getSubtitleTracks" isEqualToString:call.method]){
+                 result([player getSubtitleTracks]);
+                }
+         else if ([@"setMixWithOthers" isEqualToString:call.method]){
             [player setMixWithOthers:[argsMap[@"mixWithOthers"] boolValue]];
         } else if ([@"preCache" isEqualToString:call.method]){
             NSDictionary* dataSource = argsMap[@"dataSource"];

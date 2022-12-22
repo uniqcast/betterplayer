@@ -273,6 +273,28 @@ class AndroidBetterPlayer extends BetterPlayerPlatform {
   }
 
   @override
+  Future<Map?> getSubtitleTracks(int? textureId) async {
+    return await _channel.invokeMethod<Map>(
+      'getSubtitleTracks',
+      <String, dynamic>{
+        'textureId': textureId,
+      },
+    );
+  }
+
+  @override
+  Future<void> setSubtitleTrack(int? textureId, String? name, int? index) {
+    return _channel.invokeMethod<void>(
+      'setSubtitleTrack',
+      <String, dynamic>{
+        'textureId': textureId,
+        'name': name,
+        'index': index,
+      },
+    );
+  }
+
+  @override
   Future<void> setMixWithOthers(int? textureId, bool mixWithOthers) {
     return _channel.invokeMethod<void>(
       'setMixWithOthers',
@@ -409,6 +431,13 @@ class AndroidBetterPlayer extends BetterPlayerPlatform {
           return VideoEvent(
             eventType: VideoEventType.pipStop,
             key: key,
+          );
+
+        case 'subtitleUpdate':
+          return VideoEvent(
+            eventType: VideoEventType.subtitleUpdate,
+            key: key,
+            subtitleLines: map['subtitleLines'],
           );
 
         default:

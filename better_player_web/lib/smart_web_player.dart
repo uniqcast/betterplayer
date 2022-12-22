@@ -84,10 +84,28 @@ class PlayerEvent {
 }
 
 typedef PlayerEventCallback = void Function(PlayerEvent event);
+
 @JS()
-class Promise<T>{
- external factory Promise(dynamic Function(dynamic Function(dynamic value) resolve, dynamic Function(dynamic error) reject) executor);
+class Promise<T> {
+  external factory Promise(
+      dynamic Function(dynamic Function(dynamic value) resolve,
+              dynamic Function(dynamic error) reject)
+          executor);
 }
+
+@JS()
+@anonymous
+class SubtitleTrack {
+  external num get index;
+
+  external String get language;
+
+  external factory SubtitleTrack({
+    num index,
+    String language,
+  });
+}
+
 @JS()
 class BasePlayer {
   external factory BasePlayer();
@@ -122,6 +140,10 @@ class BasePlayer {
   external Promise<void> setQuality(num? bitrate, num? width, num? height);
 
   external void onEvent(PlayerEventCallback listener);
+
+  external Promise<List<SubtitleTrack>> getSubtitleTracks();
+
+  external Promise<void> setSubtitleTrack(num? index, String? language);
 }
 
 external BasePlayer getSmartPlayer();
