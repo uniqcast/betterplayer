@@ -145,6 +145,7 @@ abstract class BetterPlayerPlatform extends PlatformInterface {
   Future<void> setAudioTrack(int? textureId, String? name, int? index) {
     throw UnimplementedError('setAudio() has not been implemented.');
   }
+
   Future<void> setSubtitleTrack(int? textureId, String? name, int? index) {
     throw UnimplementedError('setSubtitle() has not been implemented.');
   }
@@ -152,7 +153,6 @@ abstract class BetterPlayerPlatform extends PlatformInterface {
   Future<Map?> getSubtitleTracks(int? textureId) {
     throw UnimplementedError('getSubtitleTracks() has not been implemented.');
   }
-
 
   Future<void> setMixWithOthers(int? textureId, bool mixWithOthers) {
     throw UnimplementedError('setMixWithOthers() has not been implemented.');
@@ -384,6 +384,7 @@ class VideoEvent {
     this.size,
     this.buffered,
     this.position,
+    this.subtitleLines,
   });
 
   /// The type of the event.
@@ -412,6 +413,8 @@ class VideoEvent {
   ///Seek position
   final Duration? position;
 
+  final String? subtitleLines;
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -421,6 +424,7 @@ class VideoEvent {
             eventType == other.eventType &&
             duration == other.duration &&
             size == other.size &&
+            subtitleLines == other.subtitleLines &&
             listEquals(buffered, other.buffered);
   }
 
@@ -429,6 +433,7 @@ class VideoEvent {
       eventType.hashCode ^
       duration.hashCode ^
       size.hashCode ^
+      subtitleLines.hashCode ^
       buffered.hashCode;
 }
 
@@ -466,6 +471,9 @@ enum VideoEventType {
 
   /// Picture in picture mode has been dismissed
   pipStop,
+
+  /// new subtitle received from platform
+  subtitleUpdate,
 
   /// An unknown event has been received.
   unknown,

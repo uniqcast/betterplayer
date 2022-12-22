@@ -108,10 +108,7 @@ class BetterPlayerSubtitlesDrawerState
                 : _configuration!.bottomPadding,
             left: _configuration!.leftPadding,
             right: _configuration!.rightPadding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: textWidgets,
-        ),
+        child: _buildSubtitleTextWidget(_latestValue?.subtitleLines ?? ''),
       ),
     );
   }

@@ -34,6 +34,7 @@ class VideoPlayerValue {
     this.speed = 1.0,
     this.errorDescription,
     this.isPip = false,
+    this.subtitleLines,
   });
 
   /// Returns an instance with a `null` [Duration].
@@ -88,6 +89,8 @@ class VideoPlayerValue {
   ///Is in Picture in Picture Mode
   final bool isPip;
 
+  final String? subtitleLines;
+
   /// Indicates whether or not the video has been loaded and is ready to play.
   bool get initialized => duration != null;
 
@@ -123,6 +126,7 @@ class VideoPlayerValue {
     String? errorDescription,
     double? speed,
     bool? isPip,
+    String? subtitleLines,
   }) {
     return VideoPlayerValue(
       duration: duration ?? this.duration,
@@ -137,6 +141,7 @@ class VideoPlayerValue {
       speed: speed ?? this.speed,
       errorDescription: errorDescription ?? this.errorDescription,
       isPip: isPip ?? this.isPip,
+      subtitleLines: subtitleLines ?? this.subtitleLines,
     );
   }
 
@@ -153,6 +158,7 @@ class VideoPlayerValue {
         'isLooping: $isLooping, '
         'isBuffering: $isBuffering, '
         'volume: $volume, '
+        'subtitleLines: $subtitleLines'
         'errorDescription: $errorDescription)';
   }
 }
@@ -257,6 +263,10 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           value = value.copyWith(isPip: false);
           break;
         case VideoEventType.unknown:
+          break;
+        case VideoEventType.subtitleUpdate:
+          print('VideoEvent: subtitles: ${event.subtitleLines}');
+          value = value.copyWith(subtitleLines: event.subtitleLines);
           break;
       }
     }
@@ -593,16 +603,21 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return _videoPlayerPlatform.setAudioTrack(_textureId, name, index);
   }
 
-  Future<List<BetterPlayerPlatformSubtitleModel>> getSubtitles() async{
-      final subtitles =  await _videoPlayerPlatform.getSubtitleTracks(_textureId);
-      if(subtitles != null){
-        return subtitles.entries.map((e) => BetterPlayerPlatformSubtitleModel(index: e.key, language: e.value)).toList();
-      }
-      return [BetterPlayerPlatformSubtitleModel(index: -1, language: 'Default Subtitle')];
+  Future<List<BetterPlayerPlatformSubtitleModel>> getSubtitles() async {
+    final subtitles = await _videoPlayerPlatform.getSubtitleTracks(_textureId);
+    if (subtitles != null) {
+      return subtitles.entries
+          .map((e) => BetterPlayerPlatformSubtitleModel(
+              index: e.key, language: e.value))
+          .toList();
+    }
+    return [
+      BetterPlayerPlatformSubtitleModel(index: -1, language: 'Default Subtitle')
+    ];
   }
 
   Future<void> setSubtitleTrack(String? name, int? index) {
-    return _videoPlayerPlatform.setSubtitleTrack(_textureId, name,index);
+    return _videoPlayerPlatform.setSubtitleTrack(_textureId, name, index);
   }
 
   void setMixWithOthers(bool mixWithOthers) {

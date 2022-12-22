@@ -726,6 +726,47 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 
 }
 
+- (void) setSubtitleTrack:(NSString*) name index:(int) index{
+    AVMediaSelectionGroup *textSelectionGroup = [[[_player currentItem] asset] mediaSelectionGroupForMediaCharacteristic: AVMediaCharacteristicLegible];
+    NSArray* options = textSelectionGroup.options;
+
+    for (int subtitleTrackIndex = 0; subtitleTrackIndex < [options count]; subtitleTrackIndex++) {
+        AVMediaSelectionOption* option = [options objectAtIndex:subtitleTrackIndex];
+        NSArray *metaDatas = [AVMetadataItem metadataItemsFromArray:option.commonMetadata withKey:@"title" keySpace:@"comn"];
+        if (metaDatas.count > 0) {
+            NSString *title = ((AVMetadataItem*)[metaDatas objectAtIndex:0]).stringValue;
+            if ([name compare:title] == NSOrderedSame && subtitleTrackIndex == index ){
+                [[_player currentItem] selectMediaOption:option inMediaSelectionGroup: textSelectionGroup];
+            }
+        }
+
+    }
+
+}
+
+
+- (NSDictionary*)getSubtitleTracks{
+ printf(@" _IOS_ getSubtitleTracks ");
+   NSMutableDictionary *subtitles = [NSMutableDictionary dictionary];
+    AVMediaSelectionGroup *textSelectionGroup = [[[_player currentItem] asset] mediaSelectionGroupForMediaCharacteristic: AVMediaCharacteristicLegible];
+       NSArray* options = textSelectionGroup.options;
+
+          for (int subtitleTrackIndex = 0; subtitleTrackIndex < [options count]; subtitleTrackIndex++) {
+               AVMediaSelectionOption* option = [options objectAtIndex:subtitleTrackIndex];
+               NSArray *metaDatas = [AVMetadataItem metadataItemsFromArray:option.commonMetadata withKey:@"title" keySpace:@"comn"];
+               if (metaDatas.count > 0) {
+                printf(@" _IOS_ subtitle metaData - %@",metaDatas);
+                   NSString *title = ((AVMetadataItem*)[metaDatas objectAtIndex:0]).stringValue;
+                    NSNumber *index = [NSNumber numberWithInt:subtitleTrackIndex];
+                   [subtitles setObject:title  forKey:index];
+
+               }
+
+           }
+           printf(@" _IOS_ The subtitles are - %@",subtitles);
+           return subtitles;
+}
+
 - (void)setMixWithOthers:(bool)mixWithOthers {
   if (mixWithOthers) {
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback

@@ -260,6 +260,28 @@ class IosBetterPlayer extends BetterPlayerPlatform {
     );
   }
 
+
+  @override
+  Future<Map?> getSubtitleTracks(int? textureId) async {
+    return await _channel.invokeMethod<Map?>(
+      'getSubtitleTracks',
+      <String, dynamic>{
+        'textureId': textureId,
+      },
+    );
+  }
+
+  @override
+  Future<void> setSubtitleTrack(int? textureId, String? name, int? index) {
+    return _channel.invokeMethod<void>(
+      'setSubtitleTrack',
+      <String, dynamic>{
+        'textureId': textureId,
+        'name': name,
+        'index': index,
+      },
+    );
+  }
   @override
   Future<void> setAudioTrack(int? textureId, String? name, int? index) {
     return _channel.invokeMethod<void>(

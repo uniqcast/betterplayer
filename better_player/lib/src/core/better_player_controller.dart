@@ -385,23 +385,6 @@ class BetterPlayerController {
       {bool sourceInitialize = false}) async {
     _betterPlayerPlatformSubtitlesSource = subtitlesSource;
     await videoPlayerController.setSubtitleTrack(subtitlesSource.language,subtitlesSource.index);
-    // subtitlesLines.clear();
-    // _asmsSegmentsLoaded.clear();
-    // _asmsSegmentsLoading = false;
-    //
-    // if (subtitlesSource.type != BetterPlayerSubtitlesSourceType.none) {
-    //   if (subtitlesSource.asmsIsSegmented == true) {
-    //     return;
-    //   }
-    //   final subtitlesParsed =
-    //   await BetterPlayerSubtitlesFactory.parseSubtitles(subtitlesSource);
-    //   subtitlesLines.addAll(subtitlesParsed);
-    // }
-    //
-    // _postEvent(BetterPlayerEvent(BetterPlayerEventType.changedSubtitles));
-    // if (!_disposed && !sourceInitialize) {
-    //   _postControllerEvent(BetterPlayerControllerEvent.changeSubtitles);
-    // }
   }
 
   ///Load ASMS subtitles segments for given [position].

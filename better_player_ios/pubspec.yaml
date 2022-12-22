@@ -22,12 +22,12 @@ dependencies:
   flutter:
     sdk: flutter
   better_player_platform_interface:
-#    git:
-#      url: https://github.com/uniqcast/betterplayer
-#      ref: afc24df1c8452aa71c01828c99da8dd355167872
-#      path: better_player_platform_interface
+    git:
+      url: https://github.com/uniqcast/betterplayer
+      ref: afc24df1c8452aa71c01828c99da8dd355167872
+      path: better_player_platform_interface
 #  better_player_platform_interface:
-    path: ../better_player_platform_interface
+#    path: ../better_player_platform_interface
 
 dev_dependencies:
   flutter_test:

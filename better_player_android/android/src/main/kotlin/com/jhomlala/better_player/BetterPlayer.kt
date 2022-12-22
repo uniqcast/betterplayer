@@ -58,6 +58,7 @@ import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.drm.DrmSessionManagerProvider
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
+import com.google.android.exoplayer2.text.Cue
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride
 import com.google.android.exoplayer2.trackselection.TrackSelectionOverrides
 import com.google.android.exoplayer2.upstream.DataSource
@@ -482,7 +483,18 @@ internal class BetterPlayer(
                     }
                 }
             }
+            override  fun onCues(cues: List<Cue>){
+                println("cue group size: " + cues.size)
+                val event : MutableMap<String, Any?> = HashMap()
+                event["event"] = "subtitleUpdate"
+                event["subtitleLines"] = ""
 
+                    for (cue in cues) {
+                        println("Subtitle to show: " + cue.text)
+                       event["subtitleLines"] = event["subtitleLines"].toString() + cue.text + "\n"
+                    }
+                eventSink.success(event)
+            }
             override fun onPlayerError(error: PlaybackException) {
                 eventSink.error("VideoError", "Video player had error $error", "")
             }
@@ -658,7 +670,6 @@ internal class BetterPlayer(
         Log.v("setSubtitleTrack", name)
         try {
             val mappedTrackInfo = trackSelector.currentMappedTrackInfo
-            Log.v("setSubtitleTrack", "mappedTrack ${mappedTrackInfo.toString()}")
             if (mappedTrackInfo != null) {
                 for (rendererIndex in 0 until mappedTrackInfo.rendererCount) {
                     if (mappedTrackInfo.getRendererType(rendererIndex) != C.TRACK_TYPE_TEXT) {
@@ -666,20 +677,6 @@ internal class BetterPlayer(
                     }
                     Log.v("setSubtitleTrack", "has text")
                     val trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex)
-                    var hasElementWithoutLabel = false
-                    var hasStrangeAudioTrack = false
-                    for (groupIndex in 0 until trackGroupArray.length) {
-                        val group = trackGroupArray[groupIndex]
-                        for (groupElementIndex in 0 until group.length) {
-                            val format = group.getFormat(groupElementIndex)
-                            if (format.label == null) {
-                                hasElementWithoutLabel = true
-                            }
-                            if (format.id != null && format.id == "1/15") {
-                                hasStrangeAudioTrack = true
-                            }
-                        }
-                    }
                     for (groupIndex in 0 until trackGroupArray.length) {
                         val group = trackGroupArray[groupIndex]
                         for (groupElementIndex in 0 until group.length) {
@@ -688,22 +685,13 @@ internal class BetterPlayer(
 
                             if (name == label && index == groupIndex && language != null) {
                                 Log.v("setSubtitleTrack", "label: $label, language: $language")
-                                setSubtitleTrack(language)
+                                if(exoPlayer !=null) {
+                                    exoPlayer.trackSelectionParameters =
+                                        exoPlayer.trackSelectionParameters.buildUpon().setPreferredTextLanguages(language).build()
+                                }
                                 return
                             }
 
-                            ///Fallback option
-                            if (!hasStrangeAudioTrack && hasElementWithoutLabel && index == groupIndex) {
-                                Log.v("setSubtitleTrack", "fallback_1")
-                                setAudioTrack(rendererIndex, groupIndex, groupElementIndex)
-                                return
-                            }
-                            ///Fallback option
-                            if (name == label) {
-                                Log.v("setSubtitleTrack", "fallback_2")
-                                setAudioTrack(rendererIndex, groupIndex, groupElementIndex)
-                                return
-                            }
                         }
                     }
                 }
@@ -711,19 +699,6 @@ internal class BetterPlayer(
         } catch (exception: Exception) {
             Log.e(TAG, "setSubtitleTrack failed$exception")
         }
-    }
-
-    private fun setSubtitleTrack(language: String) {
-        Log.v("setSubtitleTrack", "PRIVATE: language: $language")
-        trackSelector.setParameters(
-            trackSelector.parameters.buildUpon().setRendererDisabled(
-                C.TRACK_TYPE_VIDEO,
-                false
-            ).setRendererDisabled(
-                C.TRACK_TYPE_TEXT,
-                false
-            ).setPreferredTextLanguages(language)
-        )
     }
 
     fun getSubtitleTracks(): HashMap<Int, String> {
