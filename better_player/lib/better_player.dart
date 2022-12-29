@@ -34,5 +34,6 @@ export 'src/playlist/better_player_playlist_controller.dart';
 export 'src/subtitles/better_player_subtitles_configuration.dart';
 export 'src/subtitles/better_player_subtitles_source.dart';
 export 'src/subtitles/better_player_subtitles_source_type.dart';
+export 'src/subtitles/enums/better_player_subtitle_types.dart';
 export 'src/subtitles/models/better_player_platform_subtitle_model.dart';
 export 'src/video_player/video_player.dart' show VideoPlayerValue;

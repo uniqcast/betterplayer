@@ -608,11 +608,17 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     if (subtitles != null) {
       return subtitles.entries
           .map((e) => BetterPlayerPlatformSubtitleModel(
-              index: e.key, language: e.value))
+                index: e.key,
+                language: e.value,
+                type: BetterPlayerSubtitleTypesEnum.closedCaption,
+              ))
           .toList();
     }
     return [
-      BetterPlayerPlatformSubtitleModel(index: -1, language: 'Default Subtitle')
+      BetterPlayerPlatformSubtitleModel(
+          index: -1,
+          language: 'DEFAULT_SUBTITLE',
+          type: BetterPlayerSubtitleTypesEnum.closedCaption)
     ];
   }
 
