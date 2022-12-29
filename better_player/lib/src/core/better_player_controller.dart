@@ -96,6 +96,7 @@ class BetterPlayerController {
   BetterPlayerPlatformSubtitleModel? _betterPlayerPlatformSubtitlesSource;
   BetterPlayerPlatformSubtitleModel? get betterPlayerPlatformSubtitlesSource =>
       _betterPlayerPlatformSubtitlesSource;
+
   ///Subtitles lines for current data source.
   List<BetterPlayerSubtitle> subtitlesLines = [];
 
@@ -320,25 +321,6 @@ class BetterPlayerController {
         _betterPlayerAsmsTracks = response.tracks ?? [];
       }
 
-      /// Load subtitles
-      if (betterPlayerDataSource?.useAsmsSubtitles == true) {
-        final List<BetterPlayerAsmsSubtitle> asmsSubtitles =
-            response.subtitles ?? [];
-        for (var asmsSubtitle in asmsSubtitles) {
-          _betterPlayerSubtitlesSourceList.add(
-            BetterPlayerSubtitlesSource(
-              type: BetterPlayerSubtitlesSourceType.network,
-              name: asmsSubtitle.name,
-              urls: asmsSubtitle.realUrls,
-              asmsIsSegmented: asmsSubtitle.isSegmented,
-              asmsSegmentsTime: asmsSubtitle.segmentsTime,
-              asmsSegments: asmsSubtitle.segments,
-              selectedByDefault: asmsSubtitle.isDefault,
-            ),
-          );
-        }
-      }
-
       ///Load audio tracks
       if (betterPlayerDataSource?.useAsmsAudioTracks == true &&
           _isDataSourceAsms(betterPlayerDataSource!)) {
@@ -375,16 +357,46 @@ class BetterPlayerController {
     }
   }
 
-  Future<List<BetterPlayerPlatformSubtitleModel>> getSubtitleTracks() async{
-    return await videoPlayerController.getSubtitles();
+  Future<List<BetterPlayerPlatformSubtitleModel>> getSubtitleTracks() async {
+    List<BetterPlayerPlatformSubtitleModel> subtitles =
+        await videoPlayerController.getSubtitles();
+    if (_betterPlayerSubtitlesSourceList.isNotEmpty) {
+      for (var i = 0; i < _betterPlayerSubtitlesSourceList.length; i++) {
+        final name = _betterPlayerSubtitlesSourceList[i].name;
+        if (name != null) {
+          subtitles.add(BetterPlayerPlatformSubtitleModel(
+              index: i,
+              language: name,
+              type: BetterPlayerSubtitleTypesEnum.external));
+        }
+      }
+    }
+    return subtitles;
   }
+
   ///Setup subtitles to be displayed from given subtitle source.
   ///If subtitles source is segmented then don't load videos at start. Videos
   ///will load with just in time policy.
-  Future<void> setupPlatformSubtitleSource(BetterPlayerPlatformSubtitleModel subtitlesSource,
+  Future<void> setupPlatformSubtitleSource(
+      BetterPlayerPlatformSubtitleModel subtitlesSource,
       {bool sourceInitialize = false}) async {
     _betterPlayerPlatformSubtitlesSource = subtitlesSource;
-    await videoPlayerController.setSubtitleTrack(subtitlesSource.language,subtitlesSource.index);
+    switch (subtitlesSource.type) {
+      case BetterPlayerSubtitleTypesEnum.closedCaption:
+        await videoPlayerController.setSubtitleTrack(
+            subtitlesSource.language, subtitlesSource.index);
+        break;
+      case BetterPlayerSubtitleTypesEnum.external:
+        if (subtitlesSource.index < _betterPlayerSubtitlesSourceList.length) {
+          final subtitle =
+              _betterPlayerSubtitlesSourceList[subtitlesSource.index];
+          setupSubtitleSource(subtitle);
+        }
+        break;
+      case BetterPlayerSubtitleTypesEnum.unknown:
+        print('Subtitle Source is not supported!!!');
+        break;
+    }
   }
 
   ///Load ASMS subtitles segments for given [position].
