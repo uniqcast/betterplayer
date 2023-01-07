@@ -10,9 +10,8 @@ Duration parseDuration(dynamic value) {
   if (!time.isFinite) {
     duration = const Duration(days: 365);
   } else {
-    final seconds = time.truncate();
-    final milliseconds = ((time - seconds) * 1000).truncate();
-    duration = Duration(seconds: seconds, milliseconds: milliseconds);
+    final milliseconds = time.truncate();
+    duration = Duration(milliseconds: milliseconds);
   }
   return duration;
 }

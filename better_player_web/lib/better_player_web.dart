@@ -114,7 +114,7 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
 
   @override
   Future<void> seekTo(int? textureId, Duration? position) async {
-    return promiseToFuture(player.seekTo(position?.inSeconds ?? 0));
+    return promiseToFuture(player.seekTo(position?.inMilliseconds ?? 0));
   }
 
   @override
