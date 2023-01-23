@@ -156,6 +156,12 @@ class AndroidBetterPlayer extends BetterPlayerPlatform {
   }
 
   @override
+  Future<void> stop(int? textureId) async {
+    await seekTo(textureId, Duration.zero);
+    return pause(textureId);
+  }
+
+  @override
   Future<void> setVolume(int? textureId, double volume) {
     return _channel.invokeMethod<void>(
       'setVolume',

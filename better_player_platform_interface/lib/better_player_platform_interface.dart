@@ -88,9 +88,14 @@ abstract class BetterPlayerPlatform extends PlatformInterface {
     throw UnimplementedError('play() has not been implemented.');
   }
 
-  /// Stops the video playback.
+  /// Pauses the video playback.
   Future<void> pause(int? textureId) {
     throw UnimplementedError('pause() has not been implemented.');
+  }
+
+  /// Stops the video playback.
+  Future<void> stop(int? textureId) {
+    throw UnimplementedError('stop() has not been implemented.');
   }
 
   /// Sets the volume to a range between 0.0 and 1.0.

@@ -3,6 +3,7 @@ enum BetterPlayerEventType {
   initialized,
   play,
   pause,
+  stop,
   seekTo,
   openFullscreen,
   hideFullscreen,

@@ -114,6 +114,12 @@ class MethodChannelBetterPlayer extends BetterPlayerPlatform {
   }
 
   @override
+  Future<void> stop(int? textureId) {
+    TextureMessage textureMessage = TextureMessage()..textureId = textureId;
+    return _api.stop(textureMessage);
+  }
+
+  @override
   Future<void> setVolume(int? textureId, double volume) {
     VolumeMessage volumeMessage = VolumeMessage()
       ..textureId = textureId

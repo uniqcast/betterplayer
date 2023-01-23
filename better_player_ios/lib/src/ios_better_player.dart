@@ -156,6 +156,11 @@ class IosBetterPlayer extends BetterPlayerPlatform {
   }
 
   @override
+  Future<void> stop(int? textureId) {
+    return pause(textureId);
+  }
+
+  @override
   Future<void> setVolume(int? textureId, double volume) {
     return _channel.invokeMethod<void>(
       'setVolume',
@@ -260,7 +265,6 @@ class IosBetterPlayer extends BetterPlayerPlatform {
     );
   }
 
-
   @override
   Future<Map?> getSubtitleTracks(int? textureId) async {
     return await _channel.invokeMethod<Map?>(
@@ -282,6 +286,7 @@ class IosBetterPlayer extends BetterPlayerPlatform {
       },
     );
   }
+
   @override
   Future<void> setAudioTrack(int? textureId, String? name, int? index) {
     return _channel.invokeMethod<void>(
