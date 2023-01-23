@@ -663,10 +663,16 @@ class BetterPlayerController {
     await videoPlayerController.setLooping(looping);
   }
 
-  ///Stop video playback.
+  ///Pause video playback.
   Future<void> pause() async {
     await videoPlayerController.pause();
     _postEvent(BetterPlayerEvent(BetterPlayerEventType.pause));
+  }
+
+  ///Stop video playback.
+  Future<void> stop() async {
+    await videoPlayerController.stop();
+    _postEvent(BetterPlayerEvent(BetterPlayerEventType.stop));
   }
 
   ///Move player to specific position/moment of the video.

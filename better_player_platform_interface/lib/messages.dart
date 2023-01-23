@@ -97,7 +97,8 @@ class CreateMessage {
     pigeonMap['minBufferMs'] = minBufferMs;
     pigeonMap['maxBufferMs'] = maxBufferMs;
     pigeonMap['bufferForPlaybackMs'] = bufferForPlaybackMs;
-    pigeonMap['bufferForPlaybackAfterRebufferMs'] = bufferForPlaybackAfterRebufferMs;
+    pigeonMap['bufferForPlaybackAfterRebufferMs'] =
+        bufferForPlaybackAfterRebufferMs;
     return pigeonMap;
   }
 
@@ -107,7 +108,8 @@ class CreateMessage {
       minBufferMs: pigeonMap['minBufferMs'] as int?,
       maxBufferMs: pigeonMap['maxBufferMs'] as int?,
       bufferForPlaybackMs: pigeonMap['bufferForPlaybackMs'] as int?,
-      bufferForPlaybackAfterRebufferMs: pigeonMap['bufferForPlaybackAfterRebufferMs'] as int?,
+      bufferForPlaybackAfterRebufferMs:
+          pigeonMap['bufferForPlaybackAfterRebufferMs'] as int?,
     );
   }
 }
@@ -213,7 +215,8 @@ class DataSourceMessage {
       overriddenDuration: pigeonMap['overriddenDuration'] as int?,
       licenseUrl: pigeonMap['licenseUrl'] as String?,
       certificateUrl: pigeonMap['certificateUrl'] as String?,
-      drmHeaders: (pigeonMap['drmHeaders'] as Map<Object?, Object?>?)?.cast<String?, String?>(),
+      drmHeaders: (pigeonMap['drmHeaders'] as Map<Object?, Object?>?)
+          ?.cast<String?, String?>(),
       activityName: pigeonMap['activityName'] as String?,
       clearKey: pigeonMap['clearKey'] as String?,
       videoExtension: pigeonMap['videoExtension'] as String?,
@@ -528,118 +531,103 @@ class _BetterPlayerApiCodec extends StandardMessageCodec {
     if (value is CreateMessage) {
       buffer.putUint8(128);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is DataSourceMessage) {
+    } else if (value is DataSourceMessage) {
       buffer.putUint8(129);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is EnablePictureInPictureMessage) {
+    } else if (value is EnablePictureInPictureMessage) {
       buffer.putUint8(130);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is InnerPreCacheMessage) {
+    } else if (value is InnerPreCacheMessage) {
       buffer.putUint8(131);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is PositionMessage) {
+    } else if (value is PositionMessage) {
       buffer.putUint8(132);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is PreCacheMessage) {
+    } else if (value is PreCacheMessage) {
       buffer.putUint8(133);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is SeekToMessage) {
+    } else if (value is SeekToMessage) {
       buffer.putUint8(134);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is SetAudioTrack) {
+    } else if (value is SetAudioTrack) {
       buffer.putUint8(135);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is SetLoopingMessage) {
+    } else if (value is SetLoopingMessage) {
       buffer.putUint8(136);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is SetMixWithOthersMessage) {
+    } else if (value is SetMixWithOthersMessage) {
       buffer.putUint8(137);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is SetSpeedMessage) {
+    } else if (value is SetSpeedMessage) {
       buffer.putUint8(138);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is SetTrackParametersMessage) {
+    } else if (value is SetTrackParametersMessage) {
       buffer.putUint8(139);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is StopPreCacheMessage) {
+    } else if (value is StopPreCacheMessage) {
       buffer.putUint8(140);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is TextureMessage) {
+    } else if (value is TextureMessage) {
       buffer.putUint8(141);
       writeValue(buffer, value.encode());
-    } else 
-    if (value is VolumeMessage) {
+    } else if (value is VolumeMessage) {
       buffer.putUint8(142);
       writeValue(buffer, value.encode());
-    } else 
-{
+    } else {
       super.writeValue(buffer, value);
     }
   }
+
   @override
   Object? readValueOfType(int type, ReadBuffer buffer) {
     switch (type) {
-      case 128:       
+      case 128:
         return CreateMessage.decode(readValue(buffer)!);
-      
-      case 129:       
+
+      case 129:
         return DataSourceMessage.decode(readValue(buffer)!);
-      
-      case 130:       
+
+      case 130:
         return EnablePictureInPictureMessage.decode(readValue(buffer)!);
-      
-      case 131:       
+
+      case 131:
         return InnerPreCacheMessage.decode(readValue(buffer)!);
-      
-      case 132:       
+
+      case 132:
         return PositionMessage.decode(readValue(buffer)!);
-      
-      case 133:       
+
+      case 133:
         return PreCacheMessage.decode(readValue(buffer)!);
-      
-      case 134:       
+
+      case 134:
         return SeekToMessage.decode(readValue(buffer)!);
-      
-      case 135:       
+
+      case 135:
         return SetAudioTrack.decode(readValue(buffer)!);
-      
-      case 136:       
+
+      case 136:
         return SetLoopingMessage.decode(readValue(buffer)!);
-      
-      case 137:       
+
+      case 137:
         return SetMixWithOthersMessage.decode(readValue(buffer)!);
-      
-      case 138:       
+
+      case 138:
         return SetSpeedMessage.decode(readValue(buffer)!);
-      
-      case 139:       
+
+      case 139:
         return SetTrackParametersMessage.decode(readValue(buffer)!);
-      
-      case 140:       
+
+      case 140:
         return StopPreCacheMessage.decode(readValue(buffer)!);
-      
-      case 141:       
+
+      case 141:
         return TextureMessage.decode(readValue(buffer)!);
-      
-      case 142:       
+
+      case 142:
         return VolumeMessage.decode(readValue(buffer)!);
-      
-      default:      
+
+      default:
         return super.readValueOfType(type, buffer);
-      
     }
   }
 }
@@ -648,7 +636,8 @@ class BetterPlayerApi {
   /// Constructor for [BetterPlayerApi].  The [binaryMessenger] named argument is
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
-  BetterPlayerApi({BinaryMessenger? binaryMessenger}) : _binaryMessenger = binaryMessenger;
+  BetterPlayerApi({BinaryMessenger? binaryMessenger})
+      : _binaryMessenger = binaryMessenger;
 
   final BinaryMessenger? _binaryMessenger;
 
@@ -656,7 +645,8 @@ class BetterPlayerApi {
 
   Future<void> initialize() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.initialize', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.initialize', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(null) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -665,7 +655,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -678,7 +669,8 @@ class BetterPlayerApi {
 
   Future<TextureMessage> create(CreateMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.create', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.create', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -687,7 +679,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -705,7 +698,8 @@ class BetterPlayerApi {
 
   Future<void> dispose(TextureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.dispose', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.dispose', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -714,7 +708,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -727,7 +722,8 @@ class BetterPlayerApi {
 
   Future<void> setDataSource(DataSourceMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.setDataSource', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.setDataSource', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -736,7 +732,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -749,7 +746,8 @@ class BetterPlayerApi {
 
   Future<void> setLooping(SetLoopingMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.setLooping', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.setLooping', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -758,7 +756,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -771,7 +770,8 @@ class BetterPlayerApi {
 
   Future<void> setVolume(VolumeMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.setVolume', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.setVolume', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -780,7 +780,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -793,7 +794,8 @@ class BetterPlayerApi {
 
   Future<void> setSpeed(SetSpeedMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.setSpeed', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.setSpeed', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -802,7 +804,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -815,7 +818,8 @@ class BetterPlayerApi {
 
   Future<void> play(TextureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.play', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.play', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -824,7 +828,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -837,7 +842,8 @@ class BetterPlayerApi {
 
   Future<void> pause(TextureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.pause', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.pause', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -846,7 +852,32 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
+      throw PlatformException(
+        code: (error['code'] as String?)!,
+        message: error['message'] as String?,
+        details: error['details'],
+      );
+    } else {
+      return;
+    }
+  }
+
+  Future<void> stop(TextureMessage arg_msg) async {
+    final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.BetterPlayerApi.stop', codec,
+        binaryMessenger: _binaryMessenger);
+    final Map<Object?, Object?>? replyMap =
+        await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -859,7 +890,8 @@ class BetterPlayerApi {
 
   Future<void> setTrackParameters(SetTrackParametersMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.setTrackParameters', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.setTrackParameters', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -868,7 +900,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -881,7 +914,8 @@ class BetterPlayerApi {
 
   Future<void> seekTo(SeekToMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.seekTo', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.seekTo', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -890,7 +924,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -903,7 +938,8 @@ class BetterPlayerApi {
 
   Future<PositionMessage> position(TextureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.position', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.position', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -912,7 +948,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -930,7 +967,8 @@ class BetterPlayerApi {
 
   Future<PositionMessage> absolutePosition(TextureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.absolutePosition', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.absolutePosition', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -939,7 +977,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -955,9 +994,11 @@ class BetterPlayerApi {
     }
   }
 
-  Future<void> enablePictureInPicture(EnablePictureInPictureMessage arg_msg) async {
+  Future<void> enablePictureInPicture(
+      EnablePictureInPictureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.enablePictureInPicture', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.enablePictureInPicture', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -966,7 +1007,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -979,7 +1021,8 @@ class BetterPlayerApi {
 
   Future<bool> isPictureInPictureEnabled(TextureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.isPictureInPictureEnabled', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.isPictureInPictureEnabled', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -988,7 +1031,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -1006,7 +1050,8 @@ class BetterPlayerApi {
 
   Future<void> disablePictureInPicture(TextureMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.disablePictureInPicture', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.disablePictureInPicture', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -1015,7 +1060,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -1028,7 +1074,8 @@ class BetterPlayerApi {
 
   Future<void> setAudioTrack(SetAudioTrack arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.setAudioTrack', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.setAudioTrack', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -1037,7 +1084,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -1050,7 +1098,8 @@ class BetterPlayerApi {
 
   Future<void> setMixWithOthers(SetMixWithOthersMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.setMixWithOthers', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.setMixWithOthers', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -1059,7 +1108,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -1072,7 +1122,8 @@ class BetterPlayerApi {
 
   Future<void> clearCache() async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.clearCache', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.clearCache', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(null) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -1081,7 +1132,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -1094,7 +1146,8 @@ class BetterPlayerApi {
 
   Future<void> preCache(PreCacheMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.preCache', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.preCache', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -1103,7 +1156,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,
@@ -1116,7 +1170,8 @@ class BetterPlayerApi {
 
   Future<void> stopPreCache(StopPreCacheMessage arg_msg) async {
     final BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.BetterPlayerApi.stopPreCache', codec, binaryMessenger: _binaryMessenger);
+        'dev.flutter.pigeon.BetterPlayerApi.stopPreCache', codec,
+        binaryMessenger: _binaryMessenger);
     final Map<Object?, Object?>? replyMap =
         await channel.send(<Object?>[arg_msg]) as Map<Object?, Object?>?;
     if (replyMap == null) {
@@ -1125,7 +1180,8 @@ class BetterPlayerApi {
         message: 'Unable to establish connection on channel.',
       );
     } else if (replyMap['error'] != null) {
-      final Map<Object?, Object?> error = (replyMap['error'] as Map<Object?, Object?>?)!;
+      final Map<Object?, Object?> error =
+          (replyMap['error'] as Map<Object?, Object?>?)!;
       throw PlatformException(
         code: (error['code'] as String?)!,
         message: error['message'] as String?,

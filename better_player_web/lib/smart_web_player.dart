@@ -124,6 +124,8 @@ class BasePlayer {
 
   external Promise<void> pause();
 
+  external Promise<void> stop();
+
   external Promise<void> seekTo(num position);
 
   external Promise<num> position();

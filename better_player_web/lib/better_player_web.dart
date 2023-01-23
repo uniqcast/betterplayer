@@ -95,6 +95,11 @@ class BetterPlayerWeb extends BetterPlayerPlatform {
   }
 
   @override
+  Future<void> stop(int? textureId) {
+    return promiseToFuture(player.stop());
+  }
+
+  @override
   Future<void> setVolume(int? textureId, double volume) async {
     return promiseToFuture(player.setVolume(volume));
   }
