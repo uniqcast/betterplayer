@@ -11,32 +11,38 @@ packages:
   better_player_android:
     dependency: "direct main"
     description:
-      path: "../better_player_android"
-      relative: true
-    source: path
+      path: better_player_android
+      ref: "27ea7ceabaa9705fd6cc87a649d54440bf65f251"
+      resolved-ref: "27ea7ceabaa9705fd6cc87a649d54440bf65f251"
+      url: "https://github.com/uniqcast/betterplayer"
+    source: git
     version: "1.0.0"
   better_player_ios:
     dependency: "direct main"
     description:
-      path: "../better_player_ios"
-      relative: true
-    source: path
+      path: better_player_ios
+      ref: "27ea7ceabaa9705fd6cc87a649d54440bf65f251"
+      resolved-ref: "27ea7ceabaa9705fd6cc87a649d54440bf65f251"
+      url: "https://github.com/uniqcast/betterplayer"
+    source: git
     version: "1.0.0"
   better_player_platform_interface:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: better_player_platform_interface
-      ref: ad92ee6a70a2e78a44f6179222e64a97f2c33134
-      resolved-ref: ad92ee6a70a2e78a44f6179222e64a97f2c33134
+      ref: e25f1d79f596a1fb1f4dba8217eba25fbbce5f9f
+      resolved-ref: e25f1d79f596a1fb1f4dba8217eba25fbbce5f9f
       url: "https://github.com/uniqcast/betterplayer"
     source: git
     version: "1.0.0"
   better_player_web:
     dependency: "direct main"
     description:
-      path: "../better_player_web"
-      relative: true
-    source: path
+      path: better_player_web
+      ref: "27ea7ceabaa9705fd6cc87a649d54440bf65f251"
+      resolved-ref: "27ea7ceabaa9705fd6cc87a649d54440bf65f251"
+      url: "https://github.com/uniqcast/betterplayer"
+    source: git
     version: "1.0.0"
   boolean_selector:
     dependency: transitive
