@@ -26,8 +26,8 @@ packages:
     dependency: transitive
     description:
       path: better_player_platform_interface
-      ref: "295a9817f74e30f57d53dbd3f64a8499e94433bf"
-      resolved-ref: "295a9817f74e30f57d53dbd3f64a8499e94433bf"
+      ref: ad92ee6a70a2e78a44f6179222e64a97f2c33134
+      resolved-ref: ad92ee6a70a2e78a44f6179222e64a97f2c33134
       url: "https://github.com/uniqcast/betterplayer"
     source: git
     version: "1.0.0"

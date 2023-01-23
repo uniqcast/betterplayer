@@ -33,8 +33,8 @@ packages:
     dependency: "direct main"
     description:
       path: better_player_platform_interface
-      ref: "295a9817f74e30f57d53dbd3f64a8499e94433bf"
-      resolved-ref: "295a9817f74e30f57d53dbd3f64a8499e94433bf"
+      ref: e25f1d79f596a1fb1f4dba8217eba25fbbce5f9f
+      resolved-ref: e25f1d79f596a1fb1f4dba8217eba25fbbce5f9f
       url: "https://github.com/uniqcast/betterplayer"
     source: git
     version: "1.0.0"
